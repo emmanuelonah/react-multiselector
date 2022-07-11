@@ -1,5 +1,7 @@
+## NOTE: THIS IS A TEMPORARY DOCUMENTATION TEMPLATE FROM [mdx-bundler](https://github.com/kentcdodds/mdx-bundler/blob/main/README.md)
+
 <div align="center">
-<h1>mdx-bundler 🦤</h1>
+<h1>react-multiselector 🫵</h1>
 
 <p>Compile and bundle your MDX files and their dependencies. FAST.</p>
 </div>
@@ -30,7 +32,7 @@ dependencies. It uses [MDX v2](https://mdxjs.com/blog/v2/) and
 files (for the dependencies of your MDX files).
 
 Your source files could be local, in a remote github repo, in a CMS, or wherever
-else and it doesn't matter. All `mdx-bundler` cares about is that you pass it
+else and it doesn't matter. All `react-multis` cares about is that you pass it
 all the files and source code necessary and it will take care of bundling
 everything for you.
 
@@ -69,8 +71,8 @@ of both worlds.
     </strong>
   </summary>
 
-`mdx-bundler` actually bundles dependencies of your MDX files. For example, this
-won't work with `next-mdx-remote`, but it will with `mdx-bundler`:
+`react-multis` actually bundles dependencies of your MDX files. For example, this
+won't work with `next-mdx-remote`, but it will with `react-multis`:
 
 ```md
 ---
@@ -89,7 +91,7 @@ Here's a **neat** demo:
 ```
 
 `next-mdx-remote` chokes on that import because it's not a bundler, it's just a
-compiler. `mdx-bundler` is an MDX compiler and bundler. That's the difference.
+compiler. `react-multis` is an MDX compiler and bundler. That's the difference.
 
 </details>
 
@@ -106,12 +108,12 @@ make a typo change, you have to rebuild and redeploy the whole site. This also
 means that every MDX page you add to your site will increase your build-times,
 so it doesn't scale all that well.
 
-`mdx-bundler` can definitely be used at build-time, but it's more powerfully
+`react-multis` can definitely be used at build-time, but it's more powerfully
 used as a runtime bundler. A common use case is to have a route for your MDX
 content and when that request comes in, you load the MDX content and hand that
-off to `mdx-bundler` for bundling. This means that `mdx-bundler` is infinitely
+off to `react-multis` for bundling. This means that `react-multis` is infinitely
 scalable. Your build won't be any longer regardless of how much MDX content you
-have. Also, `mdx-bundler` is quite fast, but to make this on-demand bundling
+have. Also, `react-multis` is quite fast, but to make this on-demand bundling
 even faster, you can use appropriate cache headers to avoid unnecessary
 re-bundling.
 
@@ -120,9 +122,9 @@ filesystem to work. If you want to store your MDX content in a separate repo or
 CMS, you're kinda out of luck or have to do some build-time gymnastics to get
 the files in place for the build.
 
-With `mdx-bundler`, it doesn't matter where your MDX content comes from, you can
+With `react-multis`, it doesn't matter where your MDX content comes from, you can
 bundle files from anywhere, you're just responsible for getting the content into
-memory and then you hand that off to `mdx-bundler` for bundling.
+memory and then you hand that off to `react-multis` for bundling.
 
 </details>
 
@@ -136,19 +138,8 @@ memory and then you hand that off to `mdx-bundler` for bundling.
 Totally. It works with any of those tools. Depending on whether your
 meta-framework supports server-side rendering, you'll implement it differently.
 You might decide to go with a built-time approach (for Gatsby/CRA), but as
-mentioned, the true power of `mdx-bundler` comes in the form of on-demand
+mentioned, the true power of `react-multis` comes in the form of on-demand
 bundling. So it's best suited for SSR frameworks like Remix/Next.
-
-</details>
-
-<details>
-  <summary>
-    <strong>
-      "Why the dodo bird emoji? 🦤"
-    </strong>
-  </summary>
-
-Why not?
 
 </details>
 
@@ -162,7 +153,7 @@ Why not?
 esbuild provides a service written in GO that it interacts with. Only one
 instance of this service can run at a time and it must have an identical version
 to the npm package. If it was a hard dependency you would only be able to use
-the esbuild version mdx-bundler uses.
+the esbuild version react-multis uses.
 
 </details>
 
@@ -198,16 +189,16 @@ This module is distributed via [npm][npm] which is bundled with [node][node] and
 should be installed as one of your project's `dependencies`:
 
 ```
-npm install --save mdx-bundler esbuild
+npm install --save react-multiselector
 ```
 
-One of mdx-bundler's dependancies requires a working [node-gyp][node-gyp] setup
+One of react-multis's dependancies requires a working [node-gyp][node-gyp] setup
 to be able to install correctly.
 
 ## Usage
 
 ```typescript
-import {bundleMDX} from 'mdx-bundler'
+import {bundleMDX} from 'react-multis'
 
 const mdxSource = `
 ---
@@ -247,7 +238,7 @@ From there, you send the `code` to your client, and then:
 
 ```jsx
 import * as React from 'react'
-import {getMDXComponent} from 'mdx-bundler/client'
+import {getMDXComponent} from 'react-multis/client'
 
 function Post({code, frontmatter}) {
   // it's generally a good idea to memoize this function call to
@@ -380,7 +371,7 @@ Here's an example:
 
 ```tsx
 // server-side or build-time code that runs in Node:
-import {bundleMDX} from 'mdx-bundler'
+import {bundleMDX} from 'react-multis'
 
 const mdxSource = `
 # This is the title
@@ -404,7 +395,7 @@ const result = await bundleMDX({
 // server-rendered and/or client-side code that can run in the browser or Node:
 import * as React from 'react'
 import leftPad from 'left-pad'
-import {getMDXComponent} from 'mdx-bundler/client'
+import {getMDXComponent} from 'react-multis/client'
 
 function MDXPage({code}: {code: string}) {
   const Component = React.useMemo(
@@ -440,7 +431,7 @@ export default Demo
 _src/build.ts_
 
 ```typescript
-import {bundleMDX} from 'mdx-bundler'
+import {bundleMDX} from 'react-multis'
 
 const mdxSource = `
 ---
@@ -535,7 +526,7 @@ const {code} = await bundleMDX({
 
 ### Types
 
-`mdx-bundler` supplies complete typings within its own package.
+`react-multis` supplies complete typings within its own package.
 
 `bundleMDX` has a single type parameter which is the type of your frontmatter.
 It defaults to `{[key: string]: any}` and must be an object. This is then used
@@ -558,7 +549,7 @@ Here's an example that removes _p_ tags from around images.
 
 ```tsx
 import * as React from 'react'
-import {getMDXComponent} from 'mdx-bundler/client'
+import {getMDXComponent} from 'react-multis/client'
 
 const Paragraph: React.FC = props => {
   if (typeof props.children !== 'string' && props.children.type === 'img') {
@@ -613,7 +604,7 @@ export const toc = [{depth: 1, value: 'The title'}]
 
 ```js
 import * as React from 'react'
-import {getMDXExport} from 'mdx-bundler/client'
+import {getMDXExport} from 'react-multis/client'
 
 function MDXPage({code}: {code: string}) {
   const mdxExport = getMDXExport(code)
@@ -698,12 +689,12 @@ const {code} = await bundleMDX({
 ### Bundling a file
 
 If your MDX file is on your disk you can save some time and code by having
-`mdx-bundler` read the file for you. Instead of supplying a `source` string you
+`react-multis` read the file for you. Instead of supplying a `source` string you
 can set `file` to the path of the MDX on disk. Set `cwd` to it's folder so that
 relative imports work.
 
 ```js
-import {bundleMDX} from 'mdx-bundler'
+import {bundleMDX} from 'react-multis'
 
 const {code, frontmatter} = await bundleMDX({
   file: '/users/you/site/content/file.mdx',
@@ -716,7 +707,7 @@ const {code, frontmatter} = await bundleMDX({
 #### Cloudflare Workers
 
 We'd _love_ for this to work in cloudflare workers. Unfortunately cloudflares
-have two limitations that prevent `mdx-bundler` from working in that
+have two limitations that prevent `react-multis` from working in that
 environment:
 
 1. Workers can't run binaries. `bundleMDX` uses `esbuild` (a binary) to bundle
@@ -724,14 +715,14 @@ environment:
 2. Workers can't run `eval` or similar. `getMDXComponent` evaluates the bundled
    code using `new Function`.
 
-One workaround to this is to put your mdx-bundler related code in a different
+One workaround to this is to put your react-multis related code in a different
 environment and call that environment from within the Cloudflare worker. IMO,
 this defeats the purpose of using Cloudflare workers. Another potential
 workaround is to use WASM from within the worker. There is
 [`esbuild-wasm`](https://esbuild.github.io/getting-started/#install-the-wasm-version)
 but there are some issues with that package explained at that link. Then there's
 [`wasm-jseval`](https://github.com/maple3142/wasm-jseval), but I couldn't get
-that to run code that was output from `mdx-bundler` without error.
+that to run code that was output from `react-multis` without error.
 
 If someone would like to dig into this, that would be stellar, but unfortunately
 it's unlikely I'll ever work on it.
@@ -767,7 +758,7 @@ if (process.platform === 'win32') {
 ```
 
 More information on this issue can be found
-[in this article](https://www.arcath.net/2021/03/mdx-bundler#esbuild-executable).
+[in this article](https://www.arcath.net/2021/03/react-multis#esbuild-executable).
 
 ## Inspiration
 
@@ -829,5 +820,4 @@ MIT
 <!-- prettier-ignore-start -->
 [npm]: https://www.npmjs.com
 [node]: https://nodejs.org
-[build]: https://github.com/emmanuelonah/react-multiselector/mdx-bundler/actions?
 <!-- prettier-ignore-end -->
