@@ -27,11 +27,22 @@ export type SelectedItem = {
   [key: string]: any;
 };
 
+type FocusedItem = {
+  itemIndex: number;
+  item: SelectedItem;
+};
+
 type BaseState = {
   shownItems: boolean;
   selectedItems: SelectedItem[];
   action: ValueOf<typeof SELECT_ACTIONS>;
-  accessibility: { selectedItem: SelectedItem; labelId: string; comboBoxId: string; menuId: string };
+  accessibility: {
+    selectedItem: SelectedItem;
+    labelId: string;
+    comboBoxId: string;
+    menuId: string;
+    focusedItem: FocusedItem;
+  };
 };
 
 // REDUCER BELOW
@@ -41,13 +52,14 @@ enum TYPES {
   UPDATE_SHOWN_ITEMS = '@react-multiselector/UPDATE_SHOWN_ITEMS',
   UPDATE_SELECTED_ITEMS = '@react-multiselector/UPDATE_SELECTED_ITEMS',
   UPDATE_ACCESSIBILITY_SELECTED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_SELECTED_ITEM',
+  UPDATE_ACCESSIBILITY_FOCUSED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_FOCUSED_ITEM',
 }
 
 interface StateType extends BaseState {}
 
 type ActionType = {
   type: ValueOf<typeof TYPES>;
-  payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem };
+  payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem } & { focusedItem?: FocusedItem };
 };
 
 function multiSelectorReducer(state: StateType, action: ActionType): StateType {
@@ -68,6 +80,14 @@ function multiSelectorReducer(state: StateType, action: ActionType): StateType {
         accessibility: {
           ...state.accessibility,
           selectedItem: action.payload.selectedItem!,
+        },
+      };
+    case TYPES.UPDATE_ACCESSIBILITY_FOCUSED_ITEM:
+      return {
+        ...state,
+        accessibility: {
+          ...state.accessibility,
+          focusedItem: action.payload.focusedItem!,
         },
       };
     case TYPES.UPDATE_SELECTED_ITEMS:
@@ -107,6 +127,7 @@ const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPro
       comboBoxId: React.useId(),
       menuId: React.useId(),
       selectedItem: Object.create(null) as SelectedItem,
+      focusedItem: Object.create(null) as FocusedItem,
     },
   });
   const values = React.useMemo<MultiSelectorContextTypes>(() => ({ ...state, dispatch }), [state]);
