@@ -2,7 +2,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { theme, GlobalStyle } from 'styles';
 
-import { UITest } from 'packages/multiselector/__experiment🧪__/ui.test';
+import { UITest } from 'packages/multiselector/__experiment__/experiment';
 
 function App() {
   return (
