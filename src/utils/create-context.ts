@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { __DEV__, throwError } from '@utils/index';
+import { __DEV__, throwError } from 'utils';
 
 export function createContext<ContextType>(displayName: string) {
   const Context = React.createContext<ContextType>(null!);

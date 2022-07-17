@@ -3,68 +3,75 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from 'react';
 
-import { Input } from '@components/index';
-import { composeClassNames } from '@utils/compose-classnames';
+import { Input } from 'components';
+import { useComposeRefs } from 'hooks';
+import { composeClassNames } from 'utils';
 import { SelectedItem, useMultiSelectContext, TYPES } from './multiselector.__implementation__';
-import { useComposeRefs } from '@hooks/useComposeRefs';
+import { MultiSelectorLoader } from './multiselector.__loader__';
 
 type PrimitiveDivTypes = React.ComponentPropsWithoutRef<'div'>;
 type MultiSelectorMenuElement = React.ElementRef<'div'>;
 interface MultiSelectorMenuPropTypes extends Omit<PrimitiveDivTypes, 'children'> {
   isLoading?: boolean;
+  searchBarName?: string;
+  items: SelectedItem[];
+  searchBarPlaceholder?: string;
+  searchBarRef?: React.Ref<HTMLInputElement>;
   // eslint-disable-next-line no-unused-vars
   children?: (selectedItems: SelectedItem[]) => React.ReactElement | React.ReactElement[] | React.ReactElement;
-  searchBarPlaceholder?: string;
-  searchBarName?: string;
-  searchBarRef?: React.Ref<HTMLInputElement>;
 }
 
 export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, MultiSelectorMenuPropTypes>(
   (
-    { children, className, isLoading, searchBarName, searchBarPlaceholder, searchBarRef, ...restProps },
+    { children, className, isLoading, searchBarName, searchBarPlaceholder, searchBarRef, items, ...restProps },
     forwardedRef
   ) => {
     const { selectedItems, accessibility, shownItems, dispatch } = useMultiSelectContext();
 
     // THIS IS USEFUL WHEN THE USER WANTS TO CONTROL THE RENDERING SYSTEM BY TAPPING THE DATA WHILE RENDERING IT TO
-    if (typeof children === 'function') return children(selectedItems) as React.ReactElement;
+    if (typeof children === 'function') return children(items) as React.ReactElement;
 
     // THIS IS USEFUL WHEN THE USER IS CONSUMING INFINITE DATA USING OUR INFINITE SCROLLER FUNCTIONALITY
-    if (React.isValidElement(children)) return React.cloneElement(children, { selectedItems });
+    if (React.isValidElement(children)) return React.cloneElement(children, { items });
 
     const [searchedText, setSearchedText] = React.useState('');
-    const composeSearchBarRef = useComposeRefs<HTMLInputElement>(searchBarRef!, React.useRef<HTMLInputElement>(null));
-    const shouldRenderListItems = !!selectedItems.length && shownItems;
-
-    console.log('GBA', composeSearchBarRef);
+    const ourRef = React.useRef<HTMLInputElement>(null);
+    const composeSearchBarRef = useComposeRefs<HTMLInputElement>(searchBarRef!, ourRef);
+    const shouldRenderListItems = !!items.length && shownItems;
 
     return (
       <>
         <Input
           ref={composeSearchBarRef}
           type="search"
-          name={searchBarName}
-          placeholder={searchBarPlaceholder ?? 'Search item....'}
           value={searchedText}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSearchedText(event.target.value)}
+          className="multiselector-search-bar"
+          placeholder={searchBarPlaceholder ?? 'Search items'}
+          {...(searchBarName ? { name: searchBarName } : {})}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            if (!shownItems) dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } });
+
+            setSearchedText(event.target.value);
+          }}
+          onClick={() => dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } })}
         />
-        <div
-          {...restProps}
-          ref={forwardedRef}
-          role="listbox"
-          tabIndex={-1}
-          aria-labelledby={accessibility.labelId}
-          className={composeClassNames('combo-menu', className)}
-          id={accessibility.menuId}
-        >
-          {shouldRenderListItems &&
-            selectedItems
-              .filter((item) => item.toLowerCase().textContent.includes(searchedText.toLowerCase()))
+        {shouldRenderListItems && (
+          <div
+            {...restProps}
+            ref={forwardedRef}
+            role="listbox"
+            tabIndex={-1}
+            aria-labelledby={accessibility.labelId}
+            className={composeClassNames('multiselector-listbox', className)}
+            id={accessibility.menuId}
+          >
+            {items
+              .filter((item) => item.textContent.toLowerCase().includes(searchedText.toLowerCase()))
               .map((item) => (
-                <span
+                <div
                   key={item.id}
                   role="option"
-                  className="combo-menu__option"
+                  className="multiselector-listbox__option"
                   onClick={() => {
                     dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
 
@@ -79,14 +86,15 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
                   }}
                 >
                   {item.textContent}
-                </span>
+                </div>
               ))}
-          {isLoading && (
-            <span role="alert" aria-live="polite" className="combo-menu__loading">
-              is loading...
-            </span>
-          )}
-        </div>
+            {isLoading && (
+              <span role="alert" aria-live="polite" className="multiselector-listbox__loader">
+                <MultiSelectorLoader isLoading={isLoading} />
+              </span>
+            )}
+          </div>
+        )}
       </>
     );
   }

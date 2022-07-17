@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 
-import { composeClassNames, createContext } from '@utils/index';
+import { composeClassNames, createContext } from 'utils';
 
 // UTILS BELOW
 /** ************************************************** */
@@ -115,12 +115,14 @@ interface MultiSelectorPropTypes extends Omit<PrimitiveDivTypes, 'id'> {
 }
 
 /** ****************************************
+ * @MultiSelectorImp
  * @howToUseThisFeature
  *
- * <MultiSelector.Root selectedItems=[]>
- *    <MultiSelector.Tag/>
- *    <MultiSelector.Menu/>
- * </MultiSelector.Root>
+ *   <Multiselector.Root selectedItems={[]}>
+ *      <Multiselector.Tag />
+ *      <Multiselector.Label>Fruits</Multiselector.Label>
+ *      <Multiselector.Body searchBarPlaceholder="Search fruit" items={items} isLoading />
+ *   </Multiselector.Root>
  */
 
 const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPropTypes>(function MultiSelectorImp(
@@ -154,7 +156,7 @@ const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPro
         aria-owns={values.accessibility.menuId}
         aria-controls={values.accessibility.menuId}
         id={values.accessibility.comboBoxId}
-        className={composeClassNames('combo-input', className)}
+        className={composeClassNames('multiselector-imp', className)}
         /* aria-activedescendant={values.accessibility.selectedItem} */
       />
     </Provider>

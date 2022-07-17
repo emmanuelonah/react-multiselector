@@ -46,25 +46,23 @@
     "webpack": "^5.73.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
-    "prepare": "husky install",
+    "start:ui": "react-scripts start",
+    "build:ui": "react-scripts build",
+    "start:sb": "start-storybook -p 6006 -s public",
+    "build:sb": "build-storybook -s public",
     "test": "react-scripts test",
     "test:cv": "npm run test -- --coverage",
-    "eject": "react-scripts eject",
     "n:lint": "npx eslint . --ext .ts --ext .tsx",
     "y:lint": "yarn run eslint . --ext .ts --ext .tsx",
     "n:pret": "npx prettier --write .",
     "y:pret": "yarn prettier --write .",
-    "sb:start": "start-storybook -p 6006 -s public",
-    "sb:build": "build-storybook -s public",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "local:ci": "yarn jest --watchAll=false",
     "setup": "yarn && yarn run y:lint && yarn run local:ci",
-    "clean:cache": "npm cache clean --force"
+    "clean:cache": "npm cache clean --force",
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
