@@ -32,10 +32,11 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
     // THIS IS USEFUL WHEN THE USER IS CONSUMING INFINITE DATA USING OUR INFINITE SCROLLER FUNCTIONALITY
     if (React.isValidElement(children)) return React.cloneElement(children, { selectedItems });
 
-    /** ******************************************************* */
     const [searchedText, setSearchedText] = React.useState('');
-    const composeSearchBarRef = useComposeRefs<HTMLInputElement>(searchBarRef!, React.useRef(null));
+    const composeSearchBarRef = useComposeRefs<HTMLInputElement>(searchBarRef!, React.useRef<HTMLInputElement>(null));
     const shouldRenderListItems = !!selectedItems.length && shownItems;
+
+    console.log('GBA', composeSearchBarRef);
 
     return (
       <>
@@ -57,27 +58,29 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
           id={accessibility.menuId}
         >
           {shouldRenderListItems &&
-            selectedItems.map((item) => (
-              <span
-                key={item.id}
-                role="option"
-                className="combo-menu__option"
-                onClick={() => {
-                  dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
+            selectedItems
+              .filter((item) => item.toLowerCase().textContent.includes(searchedText.toLowerCase()))
+              .map((item) => (
+                <span
+                  key={item.id}
+                  role="option"
+                  className="combo-menu__option"
+                  onClick={() => {
+                    dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
 
-                  const copiedSelectedItems = [...selectedItems];
-                  const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
-                  const isItemAlreadySelected = itemIndex >= 0;
+                    const copiedSelectedItems = [...selectedItems];
+                    const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
+                    const isItemAlreadySelected = itemIndex >= 0;
 
-                  if (isItemAlreadySelected) copiedSelectedItems.splice(itemIndex, 1);
-                  else copiedSelectedItems.push(item);
+                    if (isItemAlreadySelected) copiedSelectedItems.splice(itemIndex, 1);
+                    else copiedSelectedItems.push(item);
 
-                  dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
-                }}
-              >
-                {item.textContent}
-              </span>
-            ))}
+                    dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
+                  }}
+                >
+                  {item.textContent}
+                </span>
+              ))}
           {isLoading && (
             <span role="alert" aria-live="polite" className="combo-menu__loading">
               is loading...

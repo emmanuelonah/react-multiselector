@@ -114,6 +114,15 @@ interface MultiSelectorPropTypes extends Omit<PrimitiveDivTypes, 'id'> {
   selectedItems: SelectedItem[];
 }
 
+/** ****************************************
+ * @howToUseThisFeature
+ *
+ * <MultiSelector.Root selectedItems=[]>
+ *    <MultiSelector.Tag/>
+ *    <MultiSelector.Menu/>
+ * </MultiSelector.Root>
+ */
+
 const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPropTypes>(function MultiSelectorImp(
   { shownItems, className, selectedItems, ...restProps },
   forwardedRef
