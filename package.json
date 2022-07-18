@@ -59,7 +59,7 @@
     "y:pret": "yarn prettier --write .",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "local:ci": "yarn jest --watchAll=false",
+    "local:ci": "react-scripts test --watchAll=false",
     "setup": "yarn && yarn run y:lint && yarn run local:ci",
     "clean:cache": "npm cache clean --force",
     "eject": "react-scripts eject",
