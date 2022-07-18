@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        # INSTALL PACKAGES JOB
+      - name: Install packages
+        run: yarn install --frozen-lockfile --non-interactive
         # ESLINT JOB
       - name: Run ESLint
         run: yarn run y:lint
