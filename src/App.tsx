@@ -2,7 +2,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { theme, GlobalStyle } from 'styles';
 
-import { UITest } from 'packages/multiselector/__experiment__/experiment';
+import { Experiment } from 'packages/multiselector/stories/experiment';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <a href="#main" className="skip-content">
         Skip to main content
       </a>
-      <UITest />
+      <Experiment />
     </ThemeProvider>
   );
 }

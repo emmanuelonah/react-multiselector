@@ -29,11 +29,13 @@ export const MultiSelectorTag = React.forwardRef<MultiSelectorTagElement, MultiS
             className={composeClassNames('multiselector-tag', className)}
           >
             {selectedItems.map((item) => (
-              <li key={item.id}>
+              <li key={item.id} className="multiselector-tag-item">
                 <section>
-                  <span>{item.textContent}</span>
+                  <span className="multiselector-tag-item__text-content">{item.textContent}</span>
+
                   <AccessibleIcon label={cancelIconLabel ?? 'Click to remove item from list'}>
                     <span
+                      className="multiselector-tag-item__cancel-icon"
                       onClick={() => {
                         const copiedSelectedItems = [...selectedItems];
                         const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);

@@ -6,8 +6,14 @@ import * as React from 'react';
 import { Input } from 'components';
 import { useComposeRefs } from 'hooks';
 import { composeClassNames } from 'utils';
-import { SelectedItem, useMultiSelectContext, TYPES } from './multiselector.__implementation__';
+import { type SelectedItem, useMultiSelectContext, TYPES } from './multiselector.__implementation__';
 import { MultiSelectorLoader } from './multiselector.__loader__';
+
+const checkIsItemSelected = (selectedItems: SelectedItem[], item: SelectedItem) => {
+  const index = selectedItems.findIndex((selectedItem) => selectedItem.id === item.id);
+
+  return index >= 0;
+};
 
 type PrimitiveDivTypes = React.ComponentPropsWithoutRef<'div'>;
 type MultiSelectorMenuElement = React.ElementRef<'div'>;
@@ -16,6 +22,7 @@ interface MultiSelectorMenuPropTypes extends Omit<PrimitiveDivTypes, 'children'>
   searchBarName?: string;
   items: SelectedItem[];
   searchBarPlaceholder?: string;
+  withMeta?: boolean;
   searchBarRef?: React.Ref<HTMLInputElement>;
   // eslint-disable-next-line no-unused-vars
   children?: (selectedItems: SelectedItem[]) => React.ReactElement | React.ReactElement[] | React.ReactElement;
@@ -23,7 +30,17 @@ interface MultiSelectorMenuPropTypes extends Omit<PrimitiveDivTypes, 'children'>
 
 export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, MultiSelectorMenuPropTypes>(
   (
-    { children, className, isLoading, searchBarName, searchBarPlaceholder, searchBarRef, items, ...restProps },
+    {
+      children,
+      className,
+      isLoading,
+      searchBarName,
+      searchBarPlaceholder,
+      searchBarRef,
+      items,
+      withMeta,
+      ...restProps
+    },
     forwardedRef
   ) => {
     const { selectedItems, accessibility, shownItems, dispatch } = useMultiSelectContext();
@@ -61,33 +78,42 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
             ref={forwardedRef}
             role="listbox"
             tabIndex={-1}
+            id={accessibility.menuId}
             aria-labelledby={accessibility.labelId}
             className={composeClassNames('multiselector-listbox', className)}
-            id={accessibility.menuId}
           >
             {items
               .filter((item) => item.textContent.toLowerCase().includes(searchedText.toLowerCase()))
-              .map((item) => (
-                <div
-                  key={item.id}
-                  role="option"
-                  className="multiselector-listbox__option"
-                  onClick={() => {
-                    dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
+              .map((item) => {
+                const isItemSelected = checkIsItemSelected(selectedItems, item);
 
-                    const copiedSelectedItems = [...selectedItems];
-                    const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
-                    const isItemAlreadySelected = itemIndex >= 0;
+                return (
+                  <div
+                    key={item.id}
+                    role="option"
+                    className={composeClassNames(
+                      'multiselector-listbox__option',
+                      isItemSelected ? 'multiselector-listbox__option--selected' : ''
+                    )}
+                    onClick={() => {
+                      dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
 
-                    if (isItemAlreadySelected) copiedSelectedItems.splice(itemIndex, 1);
-                    else copiedSelectedItems.push(item);
+                      const copiedSelectedItems = [...selectedItems];
+                      const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
+                      const isItemAlreadySelected = itemIndex >= 0;
 
-                    dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
-                  }}
-                >
-                  {item.textContent}
-                </div>
-              ))}
+                      if (isItemAlreadySelected) copiedSelectedItems.splice(itemIndex, 1);
+                      else copiedSelectedItems.push(item);
+
+                      dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
+                    }}
+                  >
+                    {item.textContent}
+                    {withMeta && isItemSelected && <span className="with-meta">selected</span>}
+                  </div>
+                );
+              })}
+
             {isLoading && (
               <span role="alert" aria-live="polite" className="multiselector-listbox__loader">
                 <MultiSelectorLoader isLoading={isLoading} />

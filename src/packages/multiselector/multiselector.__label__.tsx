@@ -15,7 +15,7 @@ export const MultiSelectorLabel = React.forwardRef<MultiSelectorLabelElement, Mu
       <label
         {...restProps}
         ref={forwardedRef}
-        className={composeClassNames('multiselector-infinite-scroller', className)}
+        className={composeClassNames('multiselector-label', className)}
         htmlFor={htmlFor ?? state.accessibility.labelId}
       />
     );
