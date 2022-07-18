@@ -15,19 +15,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Setup and run Cypress
-        uses: cypress-io/github-action@v2
-        with:
-          browser: chrome
-          headless: true
-          start: yarn run start:ui
-
+        # ESLINT JOB
       - name: Run ESLint
         run: yarn run y:lint
-
+        # PRETTIER JOB
       - name: Run Prettier
         run: yarn run y:pret
-
+        # JEST JOB
       - name: Run Jest
         run: yarn run local:ci
