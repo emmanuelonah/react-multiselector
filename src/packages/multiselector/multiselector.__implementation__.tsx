@@ -163,4 +163,6 @@ const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPro
   );
 });
 
-export { useMultiSelectContext, MultiSelectorImp, TYPES };
+export { useMultiSelectContext, TYPES };
+
+export default React.memo(MultiSelectorImp);
