@@ -1,0 +1,33 @@
+name: React multiSelector CI
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  suite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup and run Cypress
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+          start: yarn run start:ui
+
+      - name: Run ESLint
+        run: yarn run y:lint
+
+      - name: Run Prettier
+        run: yarn run y:pret
+
+      - name: Run Jest
+        run: yarn run local:ci
