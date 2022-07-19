@@ -17,7 +17,6 @@ import {
 
 function inputAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
   return function dispatchOnAction(event: React.KeyboardEvent<HTMLElement>) {
-    console.log('EVENT', event);
     switch (event.key) {
       case 'ArrowDown': {
         const KEY = event.altKey ? 'ALT_ARROW_DOWN' : 'ARROW_DOWN';
@@ -123,7 +122,7 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
             setSearchedText(event.target.value);
           }}
           onClick={() => dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } })}
-          onKeyDown={(ev: React.KeyboardEvent<HTMLDivElement>) => dispatchOnAction(ev)}
+          onKeyDown={dispatchOnAction}
         />
         {shouldRenderListItems && (
           <div
