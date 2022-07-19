@@ -6,31 +6,28 @@ import { composeClassNames, createContext } from 'utils';
 
 // UTILS BELOW
 /** ************************************************** */
-const SELECT_ACTIONS = Object.freeze({
+enum TYPES {
+  UPDATE_ACTION = '@react-multiselector/UPDATE_ACTION',
+  UPDATE_SHOWN_ITEMS = '@react-multiselector/UPDATE_SHOWN_ITEMS',
+  UPDATE_SELECTED_ITEMS = '@react-multiselector/UPDATE_SELECTED_ITEMS',
+  UPDATE_ACCESSIBILITY_SELECTED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_SELECTED_ITEM',
+  UPDATE_ACCESSIBILITY_FOCUSED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_FOCUSED_ITEM',
+}
+
+export const SELECT_ACTIONS = Object.freeze({
   NONE: -1,
-  CLOSE: 0,
-  CLOSE_SELECT: 1,
-  FIRST: 2,
-  LAST: 3,
-  NEXT: 4,
-  OPEN: 5,
-  PAGE_DOWN: 6,
-  PAGE_UP: 7,
-  PREVIOUS: 8,
-  SELECT: 9,
-  TYPE: 10,
+  ARROW_DOWN: 0,
+  ALT_ARROW_DOWN: 1,
+  ARROW_UP: 2,
+  ENTER: 3,
+  SPACE: 4,
+  HOME: 5,
+  END: 6,
 });
 
-export type SelectedItem = {
-  id: string;
-  textContent: string;
-  [key: string]: any;
-};
+export type SelectedItem = { id: string; textContent: string; [key: string]: any };
 
-type FocusedItem = {
-  itemIndex: number;
-  item: SelectedItem;
-};
+type FocusedItem = { itemIndex: number; item: SelectedItem };
 
 type BaseState = {
   shownItems: boolean;
@@ -47,17 +44,10 @@ type BaseState = {
 
 // REDUCER BELOW
 /** ************************************************** */
-enum TYPES {
-  UPDATE_ACTION = '@react-multiselector/UPDATE_ACTION',
-  UPDATE_SHOWN_ITEMS = '@react-multiselector/UPDATE_SHOWN_ITEMS',
-  UPDATE_SELECTED_ITEMS = '@react-multiselector/UPDATE_SELECTED_ITEMS',
-  UPDATE_ACCESSIBILITY_SELECTED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_SELECTED_ITEM',
-  UPDATE_ACCESSIBILITY_FOCUSED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_FOCUSED_ITEM',
-}
 
 interface StateType extends BaseState {}
 
-type ActionType = {
+export type ActionType = {
   type: ValueOf<typeof TYPES>;
   payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem } & { focusedItem?: FocusedItem };
 };

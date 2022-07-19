@@ -5,9 +5,60 @@ import * as React from 'react';
 
 import { Input } from 'components';
 import { useComposeRefs } from 'hooks';
-import { composeClassNames } from 'utils';
-import { type SelectedItem, useMultiSelectContext, TYPES } from './multiselector.__implementation__';
+import { composeClassNames, __DEV__ } from 'utils';
 import { MultiSelectorLoader } from './multiselector.__loader__';
+import {
+  type SelectedItem,
+  useMultiSelectContext,
+  TYPES,
+  SELECT_ACTIONS,
+  type ActionType,
+} from './multiselector.__implementation__';
+
+function inputAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
+  return function dispatchOnAction(event: React.KeyboardEvent<HTMLElement>) {
+    console.log('EVENT', event);
+    switch (event.key) {
+      case 'ArrowDown': {
+        const KEY = event.altKey ? 'ALT_ARROW_DOWN' : 'ARROW_DOWN';
+
+        dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: true } });
+        dispatch({ type: TYPES.UPDATE_ACTION, payload: { action: SELECT_ACTIONS[KEY] } });
+        break;
+      }
+
+      case 'ArrowUp':
+        dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: true } });
+        dispatch({ type: TYPES.UPDATE_ACTION, payload: { action: SELECT_ACTIONS.ARROW_UP } });
+        break;
+
+      case 'Enter':
+        dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: true } });
+        dispatch({ type: TYPES.UPDATE_ACTION, payload: { action: SELECT_ACTIONS.ENTER } });
+        break;
+
+      case 'Space':
+        dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: true } });
+        dispatch({ type: TYPES.UPDATE_ACTION, payload: { action: SELECT_ACTIONS.SPACE } });
+        break;
+
+      case 'End':
+        dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: true } });
+        dispatch({ type: TYPES.UPDATE_ACTION, payload: { action: SELECT_ACTIONS.END } });
+        break;
+
+      case 'Home':
+        dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: true } });
+        dispatch({ type: TYPES.UPDATE_ACTION, payload: { action: SELECT_ACTIONS.HOME } });
+        break;
+
+      default: {
+        if (__DEV__) console.error('Unhandled action: ', event.key);
+        break;
+      }
+    }
+  };
+}
 
 const checkIsItemSelected = (selectedItems: SelectedItem[], item: SelectedItem) => {
   const index = selectedItems.findIndex((selectedItem) => selectedItem.id === item.id);
@@ -55,6 +106,7 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
     const ourRef = React.useRef<HTMLInputElement>(null);
     const composeSearchBarRef = useComposeRefs<HTMLInputElement>(searchBarRef!, ourRef);
     const shouldRenderListItems = !!items.length && shownItems;
+    const dispatchOnAction = inputAccessibilityKeyHandler(dispatch);
 
     return (
       <>
@@ -71,6 +123,7 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
             setSearchedText(event.target.value);
           }}
           onClick={() => dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } })}
+          onKeyDown={(ev: React.KeyboardEvent<HTMLDivElement>) => dispatchOnAction(ev)}
         />
         {shouldRenderListItems && (
           <div
