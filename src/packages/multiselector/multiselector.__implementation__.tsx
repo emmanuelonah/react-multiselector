@@ -1,11 +1,13 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import * as React from 'react';
 
+import { ValueOf } from 'types/global';
+
+import { SELECT_ACTIONS } from './accessibility.utils';
 import { composeClassNames, createContext } from 'utils';
 
 // UTILS BELOW
 /** ************************************************** */
+/* eslint-disable no-unused-vars */
 enum TYPES {
   UPDATE_ACTION = '@react-multiselector/UPDATE_ACTION',
   UPDATE_SHOWN_ITEMS = '@react-multiselector/UPDATE_SHOWN_ITEMS',
@@ -14,24 +16,12 @@ enum TYPES {
   UPDATE_ACCESSIBILITY_FOCUSED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_FOCUSED_ITEM',
 }
 
-export const SELECT_ACTIONS = Object.freeze({
-  NONE: -1,
-  ARROW_DOWN: 0,
-  ALT_ARROW_DOWN: 1,
-  ARROW_UP: 2,
-  ENTER: 3,
-  SPACE: 4,
-  HOME: 5,
-  END: 6,
-});
-
-export type SelectedItem = { id: string; textContent: string; [key: string]: any };
-
+type SelectedItem = { id: string; textContent: string; [key: string]: any };
 type FocusedItem = { itemIndex: number; item: SelectedItem };
-
 type BaseState = {
   shownItems: boolean;
   selectedItems: SelectedItem[];
+  // eslint-disable-next-line no-undef
   action: ValueOf<typeof SELECT_ACTIONS>;
   accessibility: {
     selectedItem: SelectedItem;
@@ -47,7 +37,7 @@ type BaseState = {
 
 interface StateType extends BaseState {}
 
-export type ActionType = {
+type ActionType = {
   type: ValueOf<typeof TYPES>;
   payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem } & { focusedItem?: FocusedItem };
 };
@@ -153,6 +143,6 @@ const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPro
   );
 });
 
-export { useMultiSelectContext, TYPES };
+export { useMultiSelectContext, TYPES, ActionType, SelectedItem };
 
 export default React.memo(MultiSelectorImp);
