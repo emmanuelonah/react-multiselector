@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export function useBoolean(initialValue: boolean | (() => boolean)) {
+export function useBoolean(initialValue?: boolean | (() => boolean)) {
   const [value, setValue] = React.useState(initialValue ?? false);
   const setToFalse = React.useCallback(() => setValue(false), []);
   const setToTrue = React.useCallback(() => setValue(true), []);

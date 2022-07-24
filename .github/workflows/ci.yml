@@ -1,0 +1,29 @@
+name: React multiSelector CI
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  suite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        # INSTALL PACKAGES JOB
+      - name: Install packages
+        run: yarn install --frozen-lockfile --non-interactive
+        # ESLINT JOB
+      - name: Run ESLint
+        run: yarn run y:lint
+        # PRETTIER JOB
+      - name: Run Prettier
+        run: yarn run y:pret
+        # JEST JOB
+      - name: Run Jest
+        run: yarn run local:ci

@@ -45,7 +45,6 @@
     "no-restricted-syntax": "off",
     "no-prototype-builtins": "off",
     "import/no-unresolved": "off",
-    "no-use-before-define": "off",
     "object-curly-newline": "off",
     "function-paren-newline": "off",
     "prefer-arrow-callback": "off",

@@ -1,4 +1,4 @@
-## NOTE: THIS IS A TEMPORARY DOCUMENTATION TEMPLATE FROM [mdx-bundler](https://github.com/kentcdodds/mdx-bundler/blob/main/README.md)
+### Note: this is a temporary documentation template from [mdx-bundler](https://github.com/kentcdodds/mdx-bundler/blob/main/README.md)
 
 <div align="center">
 <h1>react-multiselector 🫵</h1>
@@ -198,7 +198,7 @@ to be able to install correctly.
 ## Usage
 
 ```typescript
-import {bundleMDX} from 'react-multis'
+import { bundleMDX } from 'react-multis';
 
 const mdxSource = `
 ---
@@ -214,7 +214,7 @@ import Demo from './demo'
 Here's a **neat** demo:
 
 <Demo />
-`.trim()
+`.trim();
 
 const result = await bundleMDX({
   source: mdxSource,
@@ -229,21 +229,21 @@ function Demo() {
 export default Demo
     `,
   },
-})
+});
 
-const {code, frontmatter} = result
+const { code, frontmatter } = result;
 ```
 
 From there, you send the `code` to your client, and then:
 
 ```jsx
-import * as React from 'react'
-import {getMDXComponent} from 'react-multis/client'
+import * as React from 'react';
+import { getMDXComponent } from 'react-multis/client';
 
-function Post({code, frontmatter}) {
+function Post({ code, frontmatter }) {
   // it's generally a good idea to memoize this function call to
   // avoid re-creating the component every render.
-  const Component = React.useMemo(() => getMDXComponent(code), [code])
+  const Component = React.useMemo(() => getMDXComponent(code), [code]);
   return (
     <>
       <header>
@@ -254,7 +254,7 @@ function Post({code, frontmatter}) {
         <Component />
       </main>
     </>
-  )
+  );
 }
 ```
 
@@ -314,12 +314,12 @@ bundleMDX({
     // this is the recommended way to add custom remark/rehype plugins:
     // The syntax might look weird, but it protects you in case we add/remove
     // plugins in the future.
-    options.remarkPlugins = [...(options.remarkPlugins ?? []), myRemarkPlugin]
-    options.rehypePlugins = [...(options.rehypePlugins ?? []), myRehypePlugin]
+    options.remarkPlugins = [...(options.remarkPlugins ?? []), myRemarkPlugin];
+    options.rehypePlugins = [...(options.rehypePlugins ?? []), myRehypePlugin];
 
-    return options
+    return options;
   },
-})
+});
 ```
 
 #### esbuildOptions
@@ -332,19 +332,12 @@ and expects an options object to be returned.
 bundleMDX({
   source: mdxSource,
   esbuildOptions(options, frontmatter) {
-    options.minify = false
-    options.target = [
-      'es2020',
-      'chrome58',
-      'firefox57',
-      'safari11',
-      'edge16',
-      'node12',
-    ]
+    options.minify = false;
+    options.target = ['es2020', 'chrome58', 'firefox57', 'safari11', 'edge16', 'node12'];
 
-    return options
+    return options;
   },
-})
+});
 ```
 
 More information on the available options can be found in the
@@ -371,7 +364,7 @@ Here's an example:
 
 ```tsx
 // server-side or build-time code that runs in Node:
-import {bundleMDX} from 'react-multis'
+import { bundleMDX } from 'react-multis';
 
 const mdxSource = `
 # This is the title
@@ -379,7 +372,7 @@ const mdxSource = `
 import leftPad from 'left-pad'
 
 <div>{leftPad("Neat demo!", 12, '!')}</div>
-`.trim()
+`.trim();
 
 const result = await bundleMDX({
   source: mdxSource,
@@ -387,26 +380,23 @@ const result = await bundleMDX({
   // file bundle and the host app. Otherwise, all deps will just be bundled.
   // So it'll work either way, this is just an optimization to avoid sending
   // multiple copies of the same library to your users.
-  globals: {'left-pad': 'myLeftPad'},
-})
+  globals: { 'left-pad': 'myLeftPad' },
+});
 ```
 
 ```tsx
 // server-rendered and/or client-side code that can run in the browser or Node:
-import * as React from 'react'
-import leftPad from 'left-pad'
-import {getMDXComponent} from 'react-multis/client'
+import * as React from 'react';
+import leftPad from 'left-pad';
+import { getMDXComponent } from 'react-multis/client';
 
-function MDXPage({code}: {code: string}) {
-  const Component = React.useMemo(
-    () => getMDXComponent(result.code, {myLeftPad: leftPad}),
-    [result.code, leftPad],
-  )
+function MDXPage({ code }: { code: string }) {
+  const Component = React.useMemo(() => getMDXComponent(result.code, { myLeftPad: leftPad }), [result.code, leftPad]);
   return (
     <main>
       <Component />
     </main>
-  )
+  );
 }
 ```
 
@@ -419,19 +409,19 @@ from or a directory that off-disk mdx should be _run_ in.
 _content/pages/demo.tsx_
 
 ```typescript
-import * as React from 'react'
+import * as React from 'react';
 
 function Demo() {
-  return <div>Neat demo!</div>
+  return <div>Neat demo!</div>;
 }
 
-export default Demo
+export default Demo;
 ```
 
 _src/build.ts_
 
 ```typescript
-import {bundleMDX} from 'react-multis'
+import { bundleMDX } from 'react-multis';
 
 const mdxSource = `
 ---
@@ -447,14 +437,14 @@ import Demo from './demo'
 Here's a **neat** demo:
 
 <Demo />
-`.trim()
+`.trim();
 
 const result = await bundleMDX({
   source: mdxSource,
   cwd: '/users/you/site/_content/pages',
-})
+});
 
-const {code, frontmatter} = result
+const { code, frontmatter } = result;
 ```
 
 #### grayMatterOptions
@@ -467,12 +457,12 @@ Return your modified configuration object for gray matter.
 
 ```js
 bundleMDX({
-  grayMatterOptions: options => {
-    options.excerpt = true
+  grayMatterOptions: (options) => {
+    options.excerpt = true;
 
-    return options
+    return options;
   },
-})
+});
 ```
 
 #### bundleDirectory & bundlePath
@@ -494,25 +484,25 @@ _It is reccomended that each bundle has its own `bundleDirectory` so that
 multiple bundles don't overwrite each others assets._
 
 ```ts
-const {code} = await bundleMDX({
+const { code } = await bundleMDX({
   file: '/path/to/site/content/file.mdx',
   cwd: '/path/to/site/content',
   bundleDirectory: '/path/to/site/public/file',
   bundlePath: '/file/',
-  mdxOptions: options => {
-    options.remarkPlugins = [remarkMdxImages]
+  mdxOptions: (options) => {
+    options.remarkPlugins = [remarkMdxImages];
 
-    return options
+    return options;
   },
-  esbuildOptions: options => {
+  esbuildOptions: (options) => {
     options.loader = {
       ...options.loader,
       '.png': 'file',
-    }
+    };
 
-    return options
+    return options;
   },
-})
+});
 ```
 
 ### Returns
@@ -534,9 +524,9 @@ to type the returned `frontmatter` and the frontmatter passed to
 `esbuildOptions` and `mdxOptions`.
 
 ```ts
-const {frontmatter} = bundleMDX<{title: string}>({source})
+const { frontmatter } = bundleMDX<{ title: string }>({ source });
 
-frontmatter.title // has type string
+frontmatter.title; // has type string
 ```
 
 ### Component Substitution
@@ -548,25 +538,25 @@ through the `components` prop on the component returned by `getMDXComponent`.
 Here's an example that removes _p_ tags from around images.
 
 ```tsx
-import * as React from 'react'
-import {getMDXComponent} from 'react-multis/client'
+import * as React from 'react';
+import { getMDXComponent } from 'react-multis/client';
 
-const Paragraph: React.FC = props => {
+const Paragraph: React.FC = (props) => {
   if (typeof props.children !== 'string' && props.children.type === 'img') {
-    return <>{props.children}</>
+    return <>{props.children}</>;
   }
 
-  return <p {...props} />
-}
+  return <p {...props} />;
+};
 
-function MDXPage({code}: {code: string}) {
-  const Component = React.useMemo(() => getMDXComponent(code), [code])
+function MDXPage({ code }: { code: string }) {
+  const Component = React.useMemo(() => getMDXComponent(code), [code]);
 
   return (
     <main>
-      <Component components={{p: Paragraph}} />
+      <Component components={{ p: Paragraph }} />
     </main>
-  )
+  );
 }
 ```
 
@@ -579,7 +569,7 @@ You can reference frontmatter meta or consts in the mdx content.
 title: Example Post
 ---
 
-export const exampleImage = 'https://example.com/image.jpg'
+export const exampleImage = 'https://example.com/image.jpg';
 
 # {frontmatter.title}
 
@@ -597,22 +587,22 @@ a module instead of just a component. It takes the same arguments that
 title: Example Post
 ---
 
-export const toc = [{depth: 1, value: 'The title'}]
+export const toc = [{ depth: 1, value: 'The title' }];
 
 # The title
 ```
 
 ```js
-import * as React from 'react'
-import {getMDXExport} from 'react-multis/client'
+import * as React from 'react';
+import { getMDXExport } from 'react-multis/client';
 
-function MDXPage({code}: {code: string}) {
-  const mdxExport = getMDXExport(code)
-  console.log(mdxExport.toc) // [ { depth: 1, value: 'The title' } ]
+function MDXPage({ code }: { code: string }) {
+  const mdxExport = getMDXExport(code);
+  console.log(mdxExport.toc); // [ { depth: 1, value: 'The title' } ]
 
-  const Component = React.useMemo(() => mdxExport.default, [code])
+  const Component = React.useMemo(() => mdxExport.default, [code]);
 
-  return <Component />
+  return <Component />;
 }
 ```
 
@@ -626,25 +616,25 @@ There are two loaders in esbuild that can be used here. The easiest is `dataurl`
 which outputs the images as inline data urls in the returned code.
 
 ```js
-import {remarkMdxImages} from 'remark-mdx-images'
+import { remarkMdxImages } from 'remark-mdx-images';
 
-const {code} = await bundleMDX({
+const { code } = await bundleMDX({
   source: mdxSource,
   cwd: '/users/you/site/_content/pages',
-  mdxOptions: options => {
-    options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkMdxImages]
+  mdxOptions: (options) => {
+    options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkMdxImages];
 
-    return options
+    return options;
   },
-  esbuildOptions: options => {
+  esbuildOptions: (options) => {
     options.loader = {
       ...options.loader,
       '.png': 'dataurl',
-    }
+    };
 
-    return options
+    return options;
   },
-})
+});
 ```
 
 The `file` loader requires a little more configuration to get working. With the
@@ -659,31 +649,31 @@ folder to be used in image sources.
 ```js
 // For the file `_content/pages/about.mdx`
 
-const {code} = await bundleMDX({
+const { code } = await bundleMDX({
   source: mdxSource,
   cwd: '/users/you/site/_content/pages',
-  mdxOptions: options => {
-    options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkMdxImages]
+  mdxOptions: (options) => {
+    options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkMdxImages];
 
-    return options
+    return options;
   },
-  esbuildOptions: options => {
+  esbuildOptions: (options) => {
     // Set the `outdir` to a public location for this bundle.
-    options.outdir = '/users/you/site/public/img/about'
+    options.outdir = '/users/you/site/public/img/about';
     options.loader = {
       ...options.loader,
       // Tell esbuild to use the `file` loader for pngs
       '.png': 'file',
-    }
+    };
     // Set the public path to /img/about
-    options.publicPath = '/img/about'
+    options.publicPath = '/img/about';
 
     // Set write to true so that esbuild will output the files.
-    options.write = true
+    options.write = true;
 
-    return options
+    return options;
   },
-})
+});
 ```
 
 ### Bundling a file
@@ -694,12 +684,12 @@ can set `file` to the path of the MDX on disk. Set `cwd` to it's folder so that
 relative imports work.
 
 ```js
-import {bundleMDX} from 'react-multis'
+import { bundleMDX } from 'react-multis';
 
-const {code, frontmatter} = await bundleMDX({
+const { code, frontmatter } = await bundleMDX({
   file: '/users/you/site/content/file.mdx',
   cwd: '/users/you/site/content/',
-})
+});
 ```
 
 ### Known Issues
@@ -737,23 +727,12 @@ Adding the following code before your `bundleMDX` will point esbuild directly at
 the correct executable for your platform.
 
 ```js
-import path from 'path'
+import path from 'path';
 
 if (process.platform === 'win32') {
-  process.env.ESBUILD_BINARY_PATH = path.join(
-    process.cwd(),
-    'node_modules',
-    'esbuild',
-    'esbuild.exe',
-  )
+  process.env.ESBUILD_BINARY_PATH = path.join(process.cwd(), 'node_modules', 'esbuild', 'esbuild.exe');
 } else {
-  process.env.ESBUILD_BINARY_PATH = path.join(
-    process.cwd(),
-    'node_modules',
-    'esbuild',
-    'bin',
-    'esbuild',
-  )
+  process.env.ESBUILD_BINARY_PATH = path.join(process.cwd(), 'node_modules', 'esbuild', 'bin', 'esbuild');
 }
 ```
 

@@ -1,75 +1,58 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import * as React from 'react';
 
-import { composeClassNames, createContext } from '@utils/index';
+import { ValueOf } from 'types/global';
+
+import { SELECT_ACTIONS } from './accessibility.utils';
+import { composeClassNames, createContext } from 'utils';
 
 // UTILS BELOW
 /** ************************************************** */
-const SELECT_ACTIONS = Object.freeze({
-  NONE: -1,
-  CLOSE: 0,
-  CLOSE_SELECT: 1,
-  FIRST: 2,
-  LAST: 3,
-  NEXT: 4,
-  OPEN: 5,
-  PAGE_DOWN: 6,
-  PAGE_UP: 7,
-  PREVIOUS: 8,
-  SELECT: 9,
-  TYPE: 10,
-});
-
-export type SelectedItem = {
-  id: string;
-  textContent: string;
-  [key: string]: any;
-};
-
-type BaseState = {
-  shownItems: boolean;
-  selectedItems: SelectedItem[];
-  action: ValueOf<typeof SELECT_ACTIONS>;
-  accessibility: { selectedItem: SelectedItem; labelId: string; comboBoxId: string; menuId: string };
-};
-
-// REDUCER BELOW
-/** ************************************************** */
+/* eslint-disable no-unused-vars */
 enum TYPES {
   UPDATE_ACTION = '@react-multiselector/UPDATE_ACTION',
   UPDATE_SHOWN_ITEMS = '@react-multiselector/UPDATE_SHOWN_ITEMS',
   UPDATE_SELECTED_ITEMS = '@react-multiselector/UPDATE_SELECTED_ITEMS',
   UPDATE_ACCESSIBILITY_SELECTED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_SELECTED_ITEM',
+  UPDATE_ACCESSIBILITY_FOCUSED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_FOCUSED_ITEM',
+  UPDATE_ACCESSIBILITY_IS_INPUT_FOCUSED = '@react-multiselector/UPDATE_ACCESSIBILITY_IS_INPUT_FOCUSED',
+  UPDATE_ACCESSIBILITY_IS_LISTBOX_FOCUSED = '@react-multiselector/UPDATE_ACCESSIBILITY_IS_LISTBOX_FOCUSED',
 }
+
+type SelectedItem = { id: string; textContent: string; [key: string]: any };
+type FocusedItem = { itemIndex: number; item: SelectedItem };
+type BaseState = {
+  shownItems: boolean;
+  selectedItems: SelectedItem[];
+  // eslint-disable-next-line no-undef
+  action: ValueOf<typeof SELECT_ACTIONS>;
+  accessibility: {
+    selectedItem: SelectedItem;
+    labelId: string;
+    comboBoxId: string;
+    menuId: string;
+  };
+};
+
+// REDUCER BELOW
+/** ************************************************** */
 
 interface StateType extends BaseState {}
 
 type ActionType = {
   type: ValueOf<typeof TYPES>;
-  payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem };
+  payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem } & {
+    focusedItem?: FocusedItem;
+  } & { inputFocusedType?: boolean } & { listboxFocusedType?: boolean };
 };
 
 function multiSelectorReducer(state: StateType, action: ActionType): StateType {
   switch (action.type) {
     case TYPES.UPDATE_ACTION:
-      return {
-        ...state,
-        action: action.payload.action!,
-      };
+      return { ...state, action: action.payload.action! };
     case TYPES.UPDATE_SHOWN_ITEMS:
-      return {
-        ...state,
-        shownItems: action.payload.shownItems!,
-      };
+      return { ...state, shownItems: action.payload.shownItems! };
     case TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM:
-      return {
-        ...state,
-        accessibility: {
-          ...state.accessibility,
-          selectedItem: action.payload.selectedItem!,
-        },
-      };
+      return { ...state, accessibility: { ...state.accessibility, selectedItem: action.payload.selectedItem! } };
     case TYPES.UPDATE_SELECTED_ITEMS:
       return { ...state, selectedItems: action.payload.selectedItems! };
     default:
@@ -93,6 +76,17 @@ interface MultiSelectorPropTypes extends Omit<PrimitiveDivTypes, 'id'> {
   shownItems?: boolean;
   selectedItems: SelectedItem[];
 }
+
+/** ****************************************
+ * @MultiSelectorImp
+ * @howToUseThisFeature
+ *
+ *   <Multiselector.Root selectedItems={[]}>
+ *      <Multiselector.Tag />
+ *      <Multiselector.Label>Fruits</Multiselector.Label>
+ *      <Multiselector.Body searchBarPlaceholder="Search fruit" items={items} isLoading />
+ *   </Multiselector.Root>
+ */
 
 const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPropTypes>(function MultiSelectorImp(
   { shownItems, className, selectedItems, ...restProps },
@@ -124,11 +118,13 @@ const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPro
         aria-owns={values.accessibility.menuId}
         aria-controls={values.accessibility.menuId}
         id={values.accessibility.comboBoxId}
-        className={composeClassNames('combo-input', className)}
+        className={composeClassNames('multiselector-imp', className)}
         /* aria-activedescendant={values.accessibility.selectedItem} */
       />
     </Provider>
   );
 });
 
-export { useMultiSelectContext, MultiSelectorImp, TYPES };
+export { useMultiSelectContext, TYPES, ActionType, SelectedItem };
+
+export default React.memo(MultiSelectorImp);
