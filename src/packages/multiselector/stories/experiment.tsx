@@ -53,6 +53,12 @@ const Container = styled.div`
       border: solid 1px #999;
       border-radius: 10px;
       width: calc(100% - 30%);
+
+      &.multiselector-search-bar--visually-focused {
+        border: 2px dashed crimson;
+        border-radius: 3px;
+        outline: none;
+      }
     }
 
     & .multiselector-listbox {
@@ -84,6 +90,12 @@ const Container = styled.div`
             display: block;
           }
         }
+      }
+
+      .multiselector-listbox__option--visually-focused {
+        border: 2px dashed crimson;
+        border-radius: 3px;
+        outline: none;
       }
     }
 

@@ -29,6 +29,12 @@ const SELECT_ACTIONS = Object.freeze({
   LISTBOX_PRINTABLE_CHARACTERS: 19,
 });
 
+/** *************************************************************************
+ * @inputAccessibilityKeyHandler
+ * @param  {React.Dispatch<ActionType>} dispatch
+ * @description is a function that handles the accessibility key events
+ * for the input element
+ *************************************************************************** */
 function inputAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
   return function onInputKeydownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
     switch (event.key) {
@@ -73,6 +79,12 @@ function inputAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
   };
 }
 
+/** *************************************************************************
+ * @listBoxAccessibilityKeyHandler
+ * @param  {React.Dispatch<ActionType>} dispatch
+ * @description is a function that handles the accessibility key events
+ * for the listbox element
+ *************************************************************************** */
 function listBoxAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
   return function onInputKeydownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
     switch (event.key) {

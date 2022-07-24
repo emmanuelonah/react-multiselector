@@ -14,6 +14,8 @@ enum TYPES {
   UPDATE_SELECTED_ITEMS = '@react-multiselector/UPDATE_SELECTED_ITEMS',
   UPDATE_ACCESSIBILITY_SELECTED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_SELECTED_ITEM',
   UPDATE_ACCESSIBILITY_FOCUSED_ITEM = '@react-multiselector/UPDATE_ACCESSIBILITY_FOCUSED_ITEM',
+  UPDATE_ACCESSIBILITY_IS_INPUT_FOCUSED = '@react-multiselector/UPDATE_ACCESSIBILITY_IS_INPUT_FOCUSED',
+  UPDATE_ACCESSIBILITY_IS_LISTBOX_FOCUSED = '@react-multiselector/UPDATE_ACCESSIBILITY_IS_LISTBOX_FOCUSED',
 }
 
 type SelectedItem = { id: string; textContent: string; [key: string]: any };
@@ -28,7 +30,6 @@ type BaseState = {
     labelId: string;
     comboBoxId: string;
     menuId: string;
-    focusedItem: FocusedItem;
   };
 };
 
@@ -39,37 +40,19 @@ interface StateType extends BaseState {}
 
 type ActionType = {
   type: ValueOf<typeof TYPES>;
-  payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem } & { focusedItem?: FocusedItem };
+  payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem } & {
+    focusedItem?: FocusedItem;
+  } & { inputFocusedType?: boolean } & { listboxFocusedType?: boolean };
 };
 
 function multiSelectorReducer(state: StateType, action: ActionType): StateType {
   switch (action.type) {
     case TYPES.UPDATE_ACTION:
-      return {
-        ...state,
-        action: action.payload.action!,
-      };
+      return { ...state, action: action.payload.action! };
     case TYPES.UPDATE_SHOWN_ITEMS:
-      return {
-        ...state,
-        shownItems: action.payload.shownItems!,
-      };
+      return { ...state, shownItems: action.payload.shownItems! };
     case TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM:
-      return {
-        ...state,
-        accessibility: {
-          ...state.accessibility,
-          selectedItem: action.payload.selectedItem!,
-        },
-      };
-    case TYPES.UPDATE_ACCESSIBILITY_FOCUSED_ITEM:
-      return {
-        ...state,
-        accessibility: {
-          ...state.accessibility,
-          focusedItem: action.payload.focusedItem!,
-        },
-      };
+      return { ...state, accessibility: { ...state.accessibility, selectedItem: action.payload.selectedItem! } };
     case TYPES.UPDATE_SELECTED_ITEMS:
       return { ...state, selectedItems: action.payload.selectedItems! };
     default:
@@ -118,7 +101,6 @@ const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPro
       comboBoxId: React.useId(),
       menuId: React.useId(),
       selectedItem: Object.create(null) as SelectedItem,
-      focusedItem: Object.create(null) as FocusedItem,
     },
   });
   const values = React.useMemo<MultiSelectorContextTypes>(() => ({ ...state, dispatch }), [state]);

@@ -4,7 +4,7 @@ import { Input } from 'components';
 import { useComposeRefs } from 'hooks';
 import { composeClassNames } from 'utils';
 import { MultiSelectorLoader } from './multiselector.__loader__';
-import { inputAccessibilityKeyHandler } from './accessibility.utils';
+import { inputAccessibilityKeyHandler, SELECT_ACTIONS } from './accessibility.utils';
 import { type SelectedItem, useMultiSelectContext, TYPES } from './multiselector.__implementation__';
 
 const checkIsItemSelected = (selectedItems: SelectedItem[], item: SelectedItem) => {
@@ -41,7 +41,7 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
     },
     forwardedRef
   ) => {
-    const { selectedItems, accessibility, shownItems, dispatch } = useMultiSelectContext();
+    const { action, selectedItems, accessibility, shownItems, dispatch } = useMultiSelectContext();
 
     // THIS IS USEFUL WHEN THE USER WANTS TO CONTROL THE RENDERING SYSTEM BY TAPPING THE DATA WHILE RENDERING IT TO
     if (typeof children === 'function') return children(items) as React.ReactElement;
@@ -53,8 +53,15 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
     const [searchedText, setSearchedText] = React.useState('');
     const ourRef = React.useRef<HTMLInputElement>(null);
     const composeSearchBarRef = useComposeRefs<HTMLInputElement>(searchBarRef!, ourRef);
+
     const shouldRenderListItems = !!items.length && shownItems;
     const onInputKeydownHandler = inputAccessibilityKeyHandler(dispatch);
+    const filteredItems = items.filter((item) => item.textContent.toLowerCase().includes(searchedText.toLowerCase()));
+    const shouldVisuallyFocusOnSearchBar = [
+      SELECT_ACTIONS.LISTBOX_ENTER,
+      SELECT_ACTIONS.LISTBOX_SPACE,
+      SELECT_ACTIONS.LISTBOX_ESCAPE,
+    ].includes(action);
 
     return (
       <>
@@ -62,12 +69,14 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
           ref={composeSearchBarRef}
           type="search"
           value={searchedText}
-          className="multiselector-search-bar"
+          className={composeClassNames(
+            'multiselector-search-bar',
+            shouldVisuallyFocusOnSearchBar ? 'multiselector-search-bar--visually-focused' : ''
+          )}
           placeholder={searchBarPlaceholder ?? 'Search items'}
           {...(searchBarName ? { name: searchBarName } : {})}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             if (!shownItems) dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } });
-
             setSearchedText(event.target.value);
           }}
           onClick={() => dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } })}
@@ -83,39 +92,44 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
             aria-labelledby={accessibility.labelId}
             className={composeClassNames('multiselector-listbox', className)}
           >
-            {items
-              .filter((item) => item.textContent.toLowerCase().includes(searchedText.toLowerCase()))
-              .map((item) => {
-                const isItemSelected = checkIsItemSelected(selectedItems, item);
+            {filteredItems.map((item, index) => {
+              const isItemSelected = checkIsItemSelected(selectedItems, item);
+              const shouldVisuallyFocusOnFirstItem =
+                [SELECT_ACTIONS.INPUT_ARROW_UP, SELECT_ACTIONS.INPUT_HOME].includes(action) && index === 0;
+              const shouldVisuallyFocusOnLastItem =
+                [SELECT_ACTIONS.INPUT_END].includes(action) && index === filteredItems.length - 1;
 
-                /* eslint-disable jsx-a11y/interactive-supports-focus */
-                return (
-                  <div
-                    key={item.id}
-                    role="option"
-                    aria-selected={isItemSelected}
-                    className={composeClassNames(
-                      'multiselector-listbox__option',
-                      isItemSelected ? 'multiselector-listbox__option--selected' : ''
-                    )}
-                    onClick={() => {
-                      dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
+              /* eslint-disable jsx-a11y/interactive-supports-focus */
+              return (
+                <div
+                  key={item.id}
+                  role="option"
+                  aria-selected={isItemSelected}
+                  className={composeClassNames(
+                    'multiselector-listbox__option',
+                    isItemSelected ? 'multiselector-listbox__option--selected' : '',
+                    shouldVisuallyFocusOnFirstItem || shouldVisuallyFocusOnLastItem
+                      ? 'multiselector-listbox__option--visually-focused'
+                      : ''
+                  )}
+                  onClick={() => {
+                    dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
 
-                      const copiedSelectedItems = [...selectedItems];
-                      const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
-                      const isItemAlreadySelected = itemIndex >= 0;
+                    const copiedSelectedItems = [...selectedItems];
+                    const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
+                    const isItemAlreadySelected = itemIndex >= 0;
 
-                      if (isItemAlreadySelected) copiedSelectedItems.splice(itemIndex, 1);
-                      else copiedSelectedItems.push(item);
+                    if (isItemAlreadySelected) copiedSelectedItems.splice(itemIndex, 1);
+                    else copiedSelectedItems.push(item);
 
-                      dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
-                    }}
-                  >
-                    {item.textContent}
-                    {withMeta && isItemSelected && <span className="with-meta">selected</span>}
-                  </div>
-                );
-              })}
+                    dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
+                  }}
+                >
+                  {item.textContent}
+                  {withMeta && isItemSelected && <span className="with-meta">selected</span>}
+                </div>
+              );
+            })}
 
             {isLoading && (
               <span role="alert" aria-live="polite" className="multiselector-listbox__loader">
