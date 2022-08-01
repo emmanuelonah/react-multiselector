@@ -4,8 +4,18 @@ import { Input } from 'components';
 import { useComposeRefs } from 'hooks';
 import { composeClassNames } from 'utils';
 import { MultiSelectorLoader } from './multiselector.__loader__';
-import { inputAccessibilityKeyHandler, SELECT_ACTIONS } from './accessibility.utils';
+import { inputAccessibilityKeyHandler, SELECT_ACTIONS, CUSTOM_EVENT_KEYS } from './accessibility.utils';
 import { type SelectedItem, useMultiSelectContext, TYPES } from './multiselector.__implementation__';
+
+/// UTILS BELOW
+/** ******************************************************************************** */
+const checkIsItemFirstToMatchSearchedText = (searchedText: string, filteredItems: SelectedItem[], index: number) => {
+  const itemIndex = filteredItems.findIndex((item) =>
+    item.textContent.toLowerCase().includes(searchedText.toLowerCase())
+  );
+
+  return !!searchedText.length && itemIndex === index;
+};
 
 const checkIsItemSelected = (selectedItems: SelectedItem[], item: SelectedItem) => {
   const index = selectedItems.findIndex((selectedItem) => selectedItem.id === item.id);
@@ -13,6 +23,8 @@ const checkIsItemSelected = (selectedItems: SelectedItem[], item: SelectedItem) 
   return index >= 0;
 };
 
+/// COMPONENT BELOW
+/** ******************************************************************************** */
 type PrimitiveDivTypes = React.ComponentPropsWithoutRef<'div'>;
 type MultiSelectorMenuElement = React.ElementRef<'div'>;
 interface MultiSelectorMenuPropTypes extends Omit<PrimitiveDivTypes, 'children'> {
@@ -66,6 +78,7 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
     return (
       <>
         <Input
+          {...(searchBarName ? { name: searchBarName } : {})}
           ref={composeSearchBarRef}
           type="search"
           value={searchedText}
@@ -74,10 +87,16 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
             shouldVisuallyFocusOnSearchBar ? 'multiselector-search-bar--visually-focused' : ''
           )}
           placeholder={searchBarPlaceholder ?? 'Search items'}
-          {...(searchBarName ? { name: searchBarName } : {})}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             if (!shownItems) dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } });
+
             setSearchedText(event.target.value);
+
+            /// INPUT ACCESSIBILITY
+            onInputKeydownHandler({
+              ...event,
+              key: CUSTOM_EVENT_KEYS.INPUT_PRINTABLE_KEY,
+            } as React.KeyboardEvent<HTMLInputElement>);
           }}
           onClick={() => dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } })}
           onKeyDown={onInputKeydownHandler}
@@ -98,6 +117,11 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
                 [SELECT_ACTIONS.INPUT_ARROW_UP, SELECT_ACTIONS.INPUT_HOME].includes(action) && index === 0;
               const shouldVisuallyFocusOnLastItem =
                 [SELECT_ACTIONS.INPUT_END].includes(action) && index === filteredItems.length - 1;
+              const areYouFirstToMatchSearchedText = checkIsItemFirstToMatchSearchedText(
+                searchedText,
+                filteredItems,
+                index
+              );
 
               /* eslint-disable jsx-a11y/interactive-supports-focus */
               return (
@@ -108,7 +132,7 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
                   className={composeClassNames(
                     'multiselector-listbox__option',
                     isItemSelected ? 'multiselector-listbox__option--selected' : '',
-                    shouldVisuallyFocusOnFirstItem || shouldVisuallyFocusOnLastItem
+                    shouldVisuallyFocusOnFirstItem || shouldVisuallyFocusOnLastItem || areYouFirstToMatchSearchedText
                       ? 'multiselector-listbox__option--visually-focused'
                       : ''
                   )}

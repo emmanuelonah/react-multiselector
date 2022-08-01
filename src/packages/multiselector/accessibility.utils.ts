@@ -3,6 +3,11 @@ import * as React from 'react';
 import { __DEV__ } from 'utils';
 import { TYPES, type ActionType } from './multiselector.__implementation__';
 
+const CUSTOM_EVENT_KEYS = Object.freeze({
+  INPUT_PRINTABLE_KEY: 'PrintableChar',
+  LISTBOX_PRINTABLE_KEY: 'PrintableChar',
+});
+
 const SELECT_ACTIONS = Object.freeze({
   // BELOW ARE THE INPUT ELEMENT ACTION TYPES
   NONE: -1,
@@ -71,6 +76,11 @@ function inputAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
         dispatch({ type: TYPES.UPDATE_ACTION, payload: { action: SELECT_ACTIONS.INPUT_HOME } });
         break;
 
+      case CUSTOM_EVENT_KEYS.INPUT_PRINTABLE_KEY:
+        dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: true } });
+        dispatch({ type: TYPES.UPDATE_ACTION, payload: { action: SELECT_ACTIONS.INPUT_PRINTABLE_CHARACTERS } });
+        break;
+
       default: {
         if (__DEV__) console.error('Unhandled action: ', event.key);
         break;
@@ -116,4 +126,4 @@ function listBoxAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
   };
 }
 
-export { inputAccessibilityKeyHandler, listBoxAccessibilityKeyHandler, SELECT_ACTIONS };
+export { inputAccessibilityKeyHandler, listBoxAccessibilityKeyHandler, SELECT_ACTIONS, CUSTOM_EVENT_KEYS };
