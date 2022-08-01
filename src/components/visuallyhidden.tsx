@@ -2,9 +2,9 @@ import * as React from 'react';
 
 // UTILS BELOW
 /** ************************************************** */
-function useVisuallyHidden(props?: React.CSSProperties): { styles: React.CSSProperties } {
+function useVisuallyHidden(props?: React.CSSProperties): { style: React.CSSProperties } {
   return {
-    styles: {
+    style: {
       clip: 'rect(0 0 0 0)',
       clipPath: 'inset(50%)',
       height: '1px',
@@ -27,7 +27,7 @@ const VisuallyHidden = React.forwardRef<VisuallyHiddenElement, VisuallyHiddenPro
   props,
   forwardedRef
 ) {
-  return <span {...props} {...useVisuallyHidden()} ref={forwardedRef} />;
+  return <span {...props} data-testid="visuallyHidden" {...useVisuallyHidden()} ref={forwardedRef} />;
 });
 
 export type { PrimitiveSpanTypes, VisuallyHiddenElement, VisuallyHiddenPropTypes };

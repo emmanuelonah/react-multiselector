@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { VisuallyHidden, type VisuallyHiddenElement, type PrimitiveSpanTypes } from '@components/index';
+import { VisuallyHidden, type VisuallyHiddenElement, type PrimitiveSpanTypes } from 'components';
 
 interface AccessibleIconPropTypes extends PrimitiveSpanTypes {
   label: string;
