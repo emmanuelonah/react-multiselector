@@ -8,9 +8,9 @@ const ROUTES = Object.freeze({
   home: '/',
   fallback: '/fallback',
   documentation: Object.freeze({
-    overview: '/docs/overview',
-    getStarted: '/docs/get-started',
-    basicUsage: '/docs/basic-usage',
+    overview: (stepIndex: number, childIndex: number) => `/docs/overview/${stepIndex}/${childIndex}`,
+    getStarted: (stepIndex: number, childIndex: number) => `/docs/get-started/${stepIndex}/${childIndex}`,
+    basicUsage: (stepIndex: number, childIndex: number) => `/docs/basic-usage/${stepIndex}/${childIndex}`,
   }),
 });
 
@@ -21,7 +21,7 @@ export const config: Step[] = [
     children: [
       {
         component: Overview,
-        route: ROUTES.documentation.overview,
+        route: ROUTES.documentation.overview(0, 0),
         title: 'Overview',
         metaDescription: 'Get an overview of the configuration options for the wizard.',
         prevStepIndex: -1, // means none
@@ -31,7 +31,7 @@ export const config: Step[] = [
       },
       {
         component: GetStarted,
-        route: ROUTES.documentation.getStarted,
+        route: ROUTES.documentation.getStarted(0, 1),
         title: 'Get started',
         metaDescription: 'Get started with the react multi-selector.',
         prevStepIndex: 0,
@@ -41,7 +41,7 @@ export const config: Step[] = [
       },
       {
         component: BasicUsage,
-        route: ROUTES.documentation.basicUsage,
+        route: ROUTES.documentation.basicUsage(0, 2),
         title: 'Basic usage',
         metaDescription: 'Test basic usage of the react multi-selector.',
         prevStepIndex: 0,

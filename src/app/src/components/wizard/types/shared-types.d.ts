@@ -16,3 +16,9 @@ export type Step = {
   metaDescription?: string;
   children: StepChildrenTypes[];
 };
+
+export type DocumentationRouteParams = {
+  stepIndex: string;
+  childIndex: string;
+  subViewPathname: string;
+};

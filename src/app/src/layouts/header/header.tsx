@@ -6,9 +6,9 @@ const ROUTES = Object.freeze({
   home: '/',
   fallback: '/fallback',
   documentation: Object.freeze({
-    overview: '/docs/overview',
-    getStarted: '/docs/get-started',
-    basicUsage: '/docs/basic-usage',
+    overview: (stepIndex: number, childIndex: number) => `/docs/overview/${stepIndex}/${childIndex}`,
+    getStarted: (stepIndex: number, childIndex: number) => `/docs/get-started/${stepIndex}/${childIndex}`,
+    basicUsage: (stepIndex: number, childIndex: number) => `/docs/basic-usage/${stepIndex}/${childIndex}`,
   }),
 });
 

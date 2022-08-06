@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useNavigate, NavigateFunction } from 'react-router-dom';
+import { useNavigate, NavigateFunction, useParams } from 'react-router-dom';
 
 import { WizardFooter } from '../footer/footer';
 import { LeftNavigation } from './components/left-navigation';
-import type { StepChildrenTypes, Step } from '../../types/shared-types';
+import type { StepChildrenTypes, Step, DocumentationRouteParams } from '../../types/shared-types';
 
 /// UTIL BELOW
 /** ******************************************************** */
@@ -75,8 +75,14 @@ const INITIAL_CURRENT_STEP: CurrentStep = { stepIndex: 0, childIndex: 0 };
 type WizardBodyPropTypes = { steps: Step[] };
 
 export function WizardBody({ steps }: WizardBodyPropTypes) {
+  const params = useParams<DocumentationRouteParams>();
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = React.useState<CurrentStep>(INITIAL_CURRENT_STEP);
+  const [currentStep, setCurrentStep] = React.useState<CurrentStep>(() => {
+    if (params.stepIndex && params.childIndex) {
+      return { stepIndex: Number(params.stepIndex), childIndex: Number(params.childIndex) };
+    }
+    return INITIAL_CURRENT_STEP;
+  });
   const currentChild = steps[currentStep.stepIndex].children[currentStep.childIndex];
 
   function updateCurrentStep(stepIndex: number, childIndex: number) {
