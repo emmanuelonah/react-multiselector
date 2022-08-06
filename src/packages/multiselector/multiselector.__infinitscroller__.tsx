@@ -11,7 +11,6 @@ interface MultiSelectorInfiniteScrollerPropTypes extends PrimitiveDivTypes {
   hasMoreItemsToLoad: boolean;
   loaderNode?: React.ReactNode;
   children: React.ReactElement | React.ReactElement[];
-  // eslint-disable-next-line no-unused-vars
   onScroll: (event: React.UIEvent<HTMLDivElement>) => void;
 }
 

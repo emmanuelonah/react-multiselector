@@ -34,7 +34,6 @@ interface MultiSelectorMenuPropTypes extends Omit<PrimitiveDivTypes, 'children'>
   searchBarPlaceholder?: string;
   withMeta?: boolean;
   searchBarRef?: React.Ref<HTMLInputElement>;
-  // eslint-disable-next-line no-unused-vars
   children?: (selectedItems: SelectedItem[]) => React.ReactElement | React.ReactElement[] | React.ReactElement;
 }
 
