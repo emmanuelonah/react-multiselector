@@ -1,7 +1,17 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-const Footer = styled.footer``;
+const Footer = styled.footer`
+  display: flex;
+  justify-content: space-between;
+
+  & button {
+    border: 0;
+    background-color: transparent;
+    color: rgb(30, 144, 255);
+    font-weight: 500;
+  }
+`;
 
 type WizardFooterPropTypes = {
   prev?: { title: string; onPrev: React.MouseEventHandler };
@@ -13,13 +23,13 @@ export function WizardFooter({ prev, next }: WizardFooterPropTypes) {
     <Footer>
       {prev && (
         <button type="button" onClick={prev?.onPrev}>
-          {prev?.title}
+          Back
         </button>
       )}
 
       {next && (
         <button type="button" onClick={next.onNext}>
-          {prev?.title}
+          Next
         </button>
       )}
     </Footer>

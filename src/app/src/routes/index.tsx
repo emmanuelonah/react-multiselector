@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { ErrorBoundary } from 'app/src/layouts';
+import { Header, ErrorBoundary, Footer } from 'app/src/layouts';
 import { DocumentationPage, FallbackPage } from 'app/src/pages';
 
 const ROUTES = Object.freeze({
@@ -17,11 +17,13 @@ function Router() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path={ROUTES.home} element={<DocumentationPage />} />
           <Route path="/docs/:subViewPathname" element={<DocumentationPage />} />
           <Route path="*" element={<FallbackPage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </ErrorBoundary>
   );

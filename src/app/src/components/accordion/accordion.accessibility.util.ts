@@ -16,7 +16,6 @@ export function manageAccordionAccessibility(
   setToTrue: () => void
 ) {
   return function onKeydownHandler(ev: React.KeyboardEvent<HTMLElement>) {
-    console.log('GBA', ev);
     const key = ev.key;
 
     if (key === 'SpaceEnter' && ev.target.nodeName === 'H3') {

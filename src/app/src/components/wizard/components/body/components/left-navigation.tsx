@@ -1,10 +1,66 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Accordion } from 'app/src/components/accordion/accordion';
 import type { StepChildrenTypes } from '../../../types/shared-types';
 
-const Nav = styled.nav``;
+const Nav = styled.nav`
+  /************************************************************
+   * Accordion is a reusable component, we are styling it in
+   * its "place" of consumption because we are treating our 
+   * reusable components as a library with variants styles
+   * decided by the consumer
+   *****/
+  & .accordion {
+    & .accordion__heading {
+      font-weight: 900;
+      border-right: solid 1px #d1cfcf;
+
+      & button {
+        background-color: transparent;
+        border: none;
+        border: 0; // for IE
+
+        & .accordion-icon {
+          padding-right: 0.5rem;
+
+          & .mgd-icon {
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  width: 100%;
+  padding-left: 0.5rem;
+
+  & ul {
+    color: #333;
+    border-left: 1px solid #d1cfcf;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+
+    & li {
+      padding-bottom: 0.5rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+
+      &.active {
+        color: rgb(30, 144, 255) !important;
+      }
+
+      &:hover {
+        color: #929191;
+      }
+    }
+  }
+`;
 
 type LeftNavigationPropTypes = {
   steps: { title: string; metaDescription?: string; children: StepChildrenTypes[] }[];
@@ -13,6 +69,7 @@ type LeftNavigationPropTypes = {
 
 export function LeftNavigation(props: LeftNavigationPropTypes) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Nav>
@@ -23,9 +80,9 @@ export function LeftNavigation(props: LeftNavigationPropTypes) {
               <li
                 key={childIndex.toString()}
                 title={child.metaDescription}
+                className={location.pathname === child.route ? 'active' : ''}
                 onClick={() => {
                   props.onNavigate(stepIndex, childIndex);
-
                   navigate(child.route);
                 }}
               >

@@ -1,8 +1,11 @@
 import * as React from 'react';
+import styled from 'styled-components';
 
+import type { Step } from './types/shared-types';
 import { WizardBody } from './components/body/body';
 import { WizardHeader } from './components/header/header';
-import type { Step } from './types/shared-types';
+
+const Container = styled.div``;
 
 type PrimitiveDivTypes = React.ComponentPropsWithoutRef<'div'>;
 type WizardElement = React.ElementRef<'div'>;
@@ -43,9 +46,9 @@ export const Wizard = React.forwardRef<WizardElement, WizardPropTypes>(function 
   forwardedRef
 ) {
   return (
-    <div {...restProps} ref={forwardedRef}>
+    <Container {...restProps} ref={forwardedRef}>
       <WizardHeader title={title} description={metaDescription} />
       <WizardBody steps={steps} />
-    </div>
+    </Container>
   );
 });

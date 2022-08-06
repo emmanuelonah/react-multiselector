@@ -42,7 +42,33 @@ function getWizardFooterProps(
 
 /// COMPONENT BELOW
 /** ******************************************************** */
-const Main = styled.main``;
+const Main = styled.main`
+  display: flex;
+  width: ${(props) => props.theme.pageWidth.width};
+  max-width: ${(props) => props.theme.pageWidth.maxWidth};
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+
+  & section {
+    // left navigation
+    &:nth-child(1) {
+      width: 45%;
+      max-width: 300px;
+    }
+
+    // main content
+    &:nth-child(2) {
+      width: 55%;
+      min-width: calc(100% - 300px);
+      padding: 1rem;
+
+      & .row-2 {
+        margin-top: 1rem;
+      }
+    }
+  }
+`;
 
 const INITIAL_CURRENT_STEP: CurrentStep = { stepIndex: 0, childIndex: 0 };
 
@@ -59,12 +85,20 @@ export function WizardBody({ steps }: WizardBodyPropTypes) {
 
   return (
     <Main>
-      <LeftNavigation steps={steps} onNavigate={updateCurrentStep} />
+      <section>
+        <LeftNavigation steps={steps} onNavigate={updateCurrentStep} />
+      </section>
 
-      <h2 title={currentChild.metaDescription}>{currentChild.title}</h2>
-      <currentChild.component />
+      <section>
+        <div className="row-1">
+          <h2 title={currentChild.metaDescription}>{currentChild.title}</h2>
+          <currentChild.component />
+        </div>
 
-      <WizardFooter {...getWizardFooterProps(steps, currentChild, updateCurrentStep, navigate)} />
+        <div className="row-2">
+          <WizardFooter {...getWizardFooterProps(steps, currentChild, updateCurrentStep, navigate)} />
+        </div>
+      </section>
     </Main>
   );
 }

@@ -10,6 +10,7 @@ function App() {
       <a href="#main" className="skip-content">
         Skip to main content
       </a>
+
       <Router />
     </ThemeProvider>
   );

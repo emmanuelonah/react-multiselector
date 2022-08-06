@@ -4,6 +4,10 @@ import { config } from './config/index';
 
 export default function Documentation() {
   return (
-    <Wizard title="Documentation" metaDescription="Documentation on how to use react multi-selector" steps={config} />
+    <Wizard
+      title="Home of React Multi-selector"
+      metaDescription="Documentation on how to use react multi-selector. Everything you need to know about the library."
+      steps={config}
+    />
   );
 }

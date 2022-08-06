@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { ValueOf } from 'types/global';
 import { useBoolean } from 'hooks/useBoolean';
+import { IconArrow } from './assets/icn-arrow.svg';
 import { AccessibleIcon } from '../../../../components';
 import { composeClassNames } from 'utils/compose-classnames';
 import { ACCESSIBILITY_KEYS, manageAccordionAccessibility } from './accordion.accessibility.util';
@@ -39,7 +40,7 @@ export const Accordion = React.forwardRef<AccordionElement, AccordionPropTypes>(
       className={composeClassNames('accordion', className)}
       onKeyDown={onKeydownHandler}
     >
-      <h3 title={metaDescription}>
+      <h3 title={metaDescription} className="accordion__heading">
         <button
           type="button"
           id={headingId}
@@ -49,16 +50,16 @@ export const Accordion = React.forwardRef<AccordionElement, AccordionPropTypes>(
           onClick={toggle}
         >
           <span className="accordion-title">
-            {title}
             <span className="accordion-icon">
               <AccessibleIcon label={isOpen ? 'Click to close list' : 'Click to open list'}>
-                <>👆</>
+                <IconArrow isOpen={isOpen} />
               </AccessibleIcon>
             </span>
+            {title}
           </span>
         </button>
       </h3>
-      <div id={bodyId} role="region" aria-labelledby={headingId} className="accordion-panel">
+      <div id={bodyId} role="region" aria-labelledby={headingId} className="accordion__panel">
         {isOpen && children}
       </div>
     </div>
