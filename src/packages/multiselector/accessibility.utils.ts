@@ -82,7 +82,11 @@ function inputAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
         break;
 
       default: {
-        if (__DEV__) console.error('Unhandled action: ', event.key);
+        if (__DEV__) {
+          console.group('MULTI_SELECTOR_INPUT_ACCESSIBILITY_KEY_ERROR🚨');
+          console.error(event.key);
+          console.groupEnd();
+        }
         break;
       }
     }
@@ -119,7 +123,11 @@ function listBoxAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
         break;
 
       default: {
-        if (__DEV__) console.error('Unhandled action: ', event.key);
+        if (__DEV__) {
+          console.group('MULTI_SELECTOR_LISTBOX_ACCESSIBILITY_KEY_ERROR🚨');
+          console.error(event.key);
+          console.groupEnd();
+        }
         break;
       }
     }

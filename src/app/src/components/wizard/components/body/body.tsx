@@ -50,22 +50,23 @@ const Main = styled.main`
   min-height: 100vh;
   position: relative;
 
-  & section {
-    // left navigation
-    &:nth-child(1) {
-      width: 45%;
-      max-width: 300px;
+  // left navigation
+  & .main-section1 {
+    width: 45%;
+    max-width: 300px;
+  }
+
+  // main content
+  & .main-section2 {
+    width: 55%;
+    min-width: calc(100% - 300px);
+    padding: 1rem;
+
+    & .row-1 {
+      width: 100%;
     }
-
-    // main content
-    &:nth-child(2) {
-      width: 55%;
-      min-width: calc(100% - 300px);
-      padding: 1rem;
-
-      & .row-2 {
-        margin-top: 1rem;
-      }
+    & .row-2 {
+      margin-top: 1rem;
     }
   }
 `;
@@ -91,13 +92,13 @@ export function WizardBody({ steps }: WizardBodyPropTypes) {
 
   return (
     <Main>
-      <section>
+      <section className="main-section1">
         <LeftNavigation steps={steps} onNavigate={updateCurrentStep} />
       </section>
 
-      <section>
+      <section className="main-section2">
         <div className="row-1">
-          <h2 title={currentChild.metaDescription}>{currentChild.title}</h2>
+          <h1 title={currentChild.metaDescription}>{currentChild.title}</h1>
           <currentChild.component />
         </div>
 

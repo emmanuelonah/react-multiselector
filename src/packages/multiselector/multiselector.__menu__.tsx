@@ -35,6 +35,7 @@ interface MultiSelectorMenuPropTypes extends Omit<PrimitiveDivTypes, 'children'>
   withMeta?: boolean;
   searchBarRef?: React.Ref<HTMLInputElement>;
   children?: (selectedItems: SelectedItem[]) => React.ReactElement | React.ReactElement[] | React.ReactElement;
+  onSelectItem?: (clickedItems: SelectedItem, selectedItems: SelectedItem[]) => any;
 }
 
 export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, MultiSelectorMenuPropTypes>(
@@ -48,6 +49,7 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
       searchBarRef,
       items,
       withMeta,
+      onSelectItem,
       ...restProps
     },
     forwardedRef
@@ -146,6 +148,8 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
                     else copiedSelectedItems.push(item);
 
                     dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
+
+                    onSelectItem?.(item, copiedSelectedItems); // From consumer of the library
                   }}
                 >
                   {item.textContent}

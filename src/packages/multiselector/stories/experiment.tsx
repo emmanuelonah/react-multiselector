@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Multiselector } from 'packages';
 
 const Container = styled.div`
+  background-color: #bd8ce0;
   padding: 1rem;
 
   & h1 {
@@ -137,7 +138,14 @@ export function Experiment() {
       <Multiselector.Root selectedItems={[]}>
         <Multiselector.Tag />
         <Multiselector.Label>Fruits</Multiselector.Label>
-        <Multiselector.Body searchBarPlaceholder="Search fruit" items={items} withMeta />
+        <Multiselector.Body
+          searchBarPlaceholder="Search fruit"
+          items={items}
+          withMeta
+          onSelectItem={(clickedItem, items) => {
+            console.log(clickedItem, items);
+          }}
+        />
       </Multiselector.Root>
     </Container>
   );
