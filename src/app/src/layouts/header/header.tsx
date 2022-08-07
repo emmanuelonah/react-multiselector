@@ -2,15 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-const ROUTES = Object.freeze({
-  home: '/',
-  fallback: '/fallback',
-  documentation: Object.freeze({
-    overview: (stepIndex: number, childIndex: number) => `/docs/overview/${stepIndex}/${childIndex}`,
-    getStarted: (stepIndex: number, childIndex: number) => `/docs/get-started/${stepIndex}/${childIndex}`,
-    basicUsage: (stepIndex: number, childIndex: number) => `/docs/basic-usage/${stepIndex}/${childIndex}`,
-  }),
-});
+import { ROUTES } from 'app/src/routes';
 
 /// UTILS BELOW
 /** ******************************************************************* */
