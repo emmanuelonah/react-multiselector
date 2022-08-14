@@ -3,12 +3,15 @@ import styled from 'styled-components';
 import { Multiselector } from 'packages';
 
 const Container = styled.div`
-  background-color: #bd8ce0;
+  background-color: #e2bffc;
+  border-radius: 20px;
+  border: solid 1px #959595;
   padding: 1rem;
 
   & h1 {
-    font-size: 1.5rem;
+    font-size: 1rem;
     padding-bottom: 1rem;
+    font-weight: 500;
   }
 
   & .multiselector-imp {
@@ -139,9 +142,9 @@ export function Experiment() {
         <Multiselector.Tag />
         <Multiselector.Label>Fruits</Multiselector.Label>
         <Multiselector.Body
+          withMeta
           searchBarPlaceholder="Search fruit"
           items={items}
-          withMeta
           onSelectItem={(clickedItem, items) => {
             console.log(clickedItem, items);
           }}

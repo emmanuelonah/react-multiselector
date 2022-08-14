@@ -9,8 +9,8 @@ import { ACCESSIBILITY_KEYS, manageAccordionAccessibility } from './accordion.ac
 
 type PrimitiveDivTypes = React.ComponentPropsWithoutRef<'div'>;
 type AccordionElement = React.ElementRef<'div'>;
-interface AccordionPropTypes extends PrimitiveDivTypes {
-  title: string;
+interface AccordionPropTypes extends Omit<PrimitiveDivTypes, 'title'> {
+  title: React.ReactNode;
   metaDescription?: string;
   openOnMount?: boolean;
   children: React.ReactNode;
