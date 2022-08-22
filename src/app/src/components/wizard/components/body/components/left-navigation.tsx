@@ -14,7 +14,6 @@ const Nav = styled.nav`
   & .accordion {
     & .accordion__heading {
       font-weight: 900;
-      border-right: solid 1px #d1cfcf;
 
       & button {
         background-color: transparent;
