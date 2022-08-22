@@ -37,12 +37,12 @@ const Section = styled.section`
 const Heading = styled.span`
   font-size: 1rem;
   color: #000;
-  padding-bottom: 1.5rem;
+  padding: 1rem 0 0.2rem 0;
   font-weight: 700;
   display: inline-block;
 
   & .code {
-    color: #bd8ce0;
+    color: #ce9178;
   }
 
   & .meta-info {
@@ -53,29 +53,32 @@ const Heading = styled.span`
   }
 `;
 
-const Iframe = styled.iframe`
-  min-width: 625px;
-  max-width: 100%;
-  height: 400px;
-  background-color: #a9b7c2;
-  border-radius: 20px;
-  border: solid 1px #959595;
+const Pre = styled.pre`
+  background-color: #002240;
+  border-radius: 10px;
+  color: #ce9178;
+  padding: 1rem;
+  max-height: 500px;
+  overflow: hidden;
+  overflow: scroll;
 `;
 
 type ContentPropTypes = {
   heading: React.ReactNode;
   playground?: React.ReactNode;
-  iframeProps?: React.IframeHTMLAttributes<HTMLIFrameElement>;
+  code: React.ReactNode;
 };
 
 export function Content(props: ContentPropTypes) {
   return (
     <Section>
       <Accordion title={<Heading>{props.heading}</Heading>}>
-        {props.iframeProps && (
+        {props.code && (
           <>
             <Heading>Code snippet</Heading>
-            <Iframe sandbox="allow-scripts allow-same-origin" loading="lazy" {...props.iframeProps} />
+            <Pre>
+              <code>{props.code}</code>
+            </Pre>
           </>
         )}
         {props.playground && (

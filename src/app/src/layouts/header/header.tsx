@@ -6,15 +6,14 @@ import { ROUTES } from 'app/src/routes';
 
 /// UTILS BELOW
 /** ******************************************************************* */
-
 const BlueNode = styled.span`
-  color: rgb(30, 144, 255);
+  color: rgb(21, 21, 21);
 `;
 const GreenNode = styled.span`
-  color: green;
+  color: #2f302f;
 `;
 const OrangeNode = styled.span`
-  color: orange;
+  color: #5c5c5b;
 `;
 
 const ELEMENTS = [BlueNode, GreenNode, OrangeNode];
@@ -27,7 +26,6 @@ function generateLogo() {
         const Element = ELEMENTS[Math.floor(Math.random() * ELEMENTS.length)];
         return <Element key={index.toString()}>{node}</Element>;
       })}
-      👆
     </>
   );
 }
@@ -35,14 +33,16 @@ function generateLogo() {
 /// COMPONENT BELOW
 /** ******************************************************************* */
 const HeaderNode = styled.header`
+  background-color: ${(props) => props.theme.colors.white};
   margin: 0 auto;
   font-weight: 900;
   border-bottom: solid 1px #d1cfcf;
   padding: 1rem 1rem 0 1rem;
-  width: ${(props) => props.theme.pageWidth.width};
+  width: ${(props) => props.theme.pageWidth.minWidth};
+  position: fixed;
 
   & nav {
-    width: ${(props) => props.theme.pageWidth.width};
+    width: 100%;
     max-width: ${(props) => props.theme.pageWidth.maxWidth};
     margin: 0 auto;
     display: flex;

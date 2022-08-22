@@ -4,8 +4,7 @@ import { Multiselector } from 'packages';
 
 const Container = styled.div`
   background-color: #002240;
-  border-radius: 20px;
-  border: solid 1px #959595;
+  border-radius: 10px;
   padding: 1rem;
   max-height: 500px;
   overflow: hidden;

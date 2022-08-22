@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate, NavigateFunction, useParams } from 'react-router-dom';
 
 import { WizardFooter } from '../footer/footer';
+import { Main as MainLayout } from 'app/src/layouts';
 import { LeftNavigation } from './components/left-navigation';
 import type { StepChildrenTypes, Step, DocumentationRouteParams } from '../../types/shared-types';
 
@@ -42,13 +43,13 @@ function getWizardFooterProps(
 
 /// COMPONENT BELOW
 /** ******************************************************** */
-const Main = styled.main`
+const Main = styled(MainLayout)`
   display: flex;
   width: ${(props) => props.theme.pageWidth.width};
   max-width: ${(props) => props.theme.pageWidth.maxWidth};
-  margin: 0 auto;
+  margin: 5rem auto;
   min-height: 100vh;
-  position: relative;
+  padding-bottom: 2rem;
 
   // left navigation
   & .main-section1 {
