@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { If } from '@components';
+import { If } from 'components';
 import { useComposeRefs } from 'hooks';
 import { composeClassNames } from 'utils';
 import { MultiSelectorLoader } from './multiselector.__loader__';
