@@ -33,5 +33,6 @@ type RenderPropsComposerPropTypes<DataType> = {
   **** */
 export function RenderPropsComposer<DataType>(props: RenderPropsComposerPropTypes<DataType>) {
   const data = props.theirData ?? (TESTING_DATA as unknown as DataType);
+
   return <>{props.children(data)}</>;
 }
