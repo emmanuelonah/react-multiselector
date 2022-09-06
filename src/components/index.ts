@@ -1,3 +1,4 @@
+export { If } from './if';
 export { Input } from './input';
 export { AccessibleIcon } from './accessible-icon';
 export {

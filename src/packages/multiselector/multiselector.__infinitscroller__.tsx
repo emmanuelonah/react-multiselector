@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { If } from '@components';
 import { useComposeRefs } from 'hooks';
 import { composeClassNames } from 'utils';
 import { MultiSelectorLoader } from './multiselector.__loader__';
@@ -40,7 +41,8 @@ export const MultiSelectorInfiniteScroller = React.forwardRef<
       onScroll={onScrollHandler}
     >
       {children}
-      {loaderNode ?? <MultiSelectorLoader isLoading={isLoading} />}
+
+      <If condition={loaderNode == undefined} do={<MultiSelectorLoader isLoading={isLoading} />} />
     </div>
   );
 });

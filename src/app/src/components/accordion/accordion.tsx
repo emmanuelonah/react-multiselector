@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ValueOf } from 'types/global';
 import { useBoolean } from 'hooks/useBoolean';
 import { IconArrow } from './assets/icn-arrow.svg';
-import { AccessibleIcon } from '../../../../components';
+import { AccessibleIcon, If } from '../../../../components';
 import { composeClassNames } from 'utils/compose-classnames';
 import { ACCESSIBILITY_KEYS, manageAccordionAccessibility } from './accordion.accessibility.util';
 
@@ -55,12 +55,14 @@ export const Accordion = React.forwardRef<AccordionElement, AccordionPropTypes>(
                 <IconArrow isOpen={isOpen} />
               </AccessibleIcon>
             </span>
+
             {title}
           </span>
         </button>
       </h3>
+
       <div id={bodyId} role="region" aria-labelledby={headingId} className="accordion__panel">
-        {isOpen && children}
+        <If condition={isOpen} do={children} />
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { If } from 'components';
+
 const Footer = styled.footer`
   display: flex;
   justify-content: space-between;
@@ -21,17 +23,23 @@ type WizardFooterPropTypes = {
 export function WizardFooter({ prev, next }: WizardFooterPropTypes) {
   return (
     <Footer>
-      {prev && (
-        <button type="button" onClick={prev?.onPrev}>
-          Back
-        </button>
-      )}
+      <If
+        condition={prev !== undefined}
+        do={
+          <button type="button" onClick={prev?.onPrev}>
+            Back
+          </button>
+        }
+      />
 
-      {next && (
-        <button type="button" onClick={next.onNext}>
-          Next
-        </button>
-      )}
+      <If
+        condition={next !== undefined}
+        do={
+          <button type="button" onClick={next?.onNext}>
+            Next
+          </button>
+        }
+      />
     </Footer>
   );
 }

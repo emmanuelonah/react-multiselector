@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { composeClassNames } from 'utils';
-import { AccessibleIcon } from 'components';
+import { If, AccessibleIcon } from 'components';
 import { useMultiSelectContext, TYPES } from './multiselector.__implementation__';
 
 type PrimitiveUlTypes = React.ComponentPropsWithoutRef<'ul'>;
@@ -19,8 +19,9 @@ export const MultiSelectorTag = React.forwardRef<MultiSelectorTagElement, MultiS
     const hasSelectedItems = !!selectedItems.length;
 
     return (
-      <>
-        {hasSelectedItems && (
+      <If
+        condition={hasSelectedItems}
+        do={
           <ul
             {...restProps}
             ref={forwardedRef}
@@ -53,8 +54,8 @@ export const MultiSelectorTag = React.forwardRef<MultiSelectorTagElement, MultiS
               </li>
             ))}
           </ul>
-        )}
-      </>
+        }
+      />
     );
   }
 );

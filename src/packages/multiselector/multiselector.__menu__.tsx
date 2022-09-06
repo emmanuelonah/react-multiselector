@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Input } from 'components';
+import { If, Input } from 'components';
 import { useComposeRefs } from 'hooks';
 import { composeClassNames } from 'utils';
 import { MultiSelectorLoader } from './multiselector.__loader__';
@@ -102,69 +102,75 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
           onClick={() => dispatch({ type: TYPES.UPDATE_SHOWN_ITEMS, payload: { shownItems: !shownItems } })}
           onKeyDown={onInputKeydownHandler}
         />
-        {shouldRenderListItems && (
-          <div
-            {...restProps}
-            ref={forwardedRef}
-            role="listbox"
-            tabIndex={-1}
-            id={accessibility.menuId}
-            aria-labelledby={accessibility.labelId}
-            className={composeClassNames('multiselector-listbox', className)}
-          >
-            {filteredItems.map((item, index) => {
-              const isItemSelected = checkIsItemSelected(selectedItems, item);
-              const shouldVisuallyFocusOnFirstItem =
-                [SELECT_ACTIONS.INPUT_ARROW_UP, SELECT_ACTIONS.INPUT_HOME].includes(action) && index === 0;
-              const shouldVisuallyFocusOnLastItem =
-                [SELECT_ACTIONS.INPUT_END].includes(action) && index === filteredItems.length - 1;
-              const areYouFirstToMatchSearchedText = checkIsItemFirstToMatchSearchedText(
-                searchedText,
-                filteredItems,
-                index
-              );
+        <If
+          condition={shouldRenderListItems}
+          do={
+            <div
+              {...restProps}
+              ref={forwardedRef}
+              role="listbox"
+              tabIndex={-1}
+              id={accessibility.menuId}
+              aria-labelledby={accessibility.labelId}
+              className={composeClassNames('multiselector-listbox', className)}
+            >
+              {filteredItems.map((item, index) => {
+                const isItemSelected = checkIsItemSelected(selectedItems, item);
+                const shouldVisuallyFocusOnFirstItem =
+                  [SELECT_ACTIONS.INPUT_ARROW_UP, SELECT_ACTIONS.INPUT_HOME].includes(action) && index === 0;
+                const shouldVisuallyFocusOnLastItem =
+                  [SELECT_ACTIONS.INPUT_END].includes(action) && index === filteredItems.length - 1;
+                const areYouFirstToMatchSearchedText = checkIsItemFirstToMatchSearchedText(
+                  searchedText,
+                  filteredItems,
+                  index
+                );
 
-              /* eslint-disable jsx-a11y/interactive-supports-focus */
-              return (
-                <div
-                  key={item.id}
-                  role="option"
-                  aria-selected={isItemSelected}
-                  className={composeClassNames(
-                    'multiselector-listbox__option',
-                    isItemSelected ? 'multiselector-listbox__option--selected' : '',
-                    shouldVisuallyFocusOnFirstItem || shouldVisuallyFocusOnLastItem || areYouFirstToMatchSearchedText
-                      ? 'multiselector-listbox__option--visually-focused'
-                      : ''
-                  )}
-                  onClick={() => {
-                    dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
+                /* eslint-disable jsx-a11y/interactive-supports-focus */
+                return (
+                  <div
+                    key={item.id}
+                    role="option"
+                    aria-selected={isItemSelected}
+                    className={composeClassNames(
+                      'multiselector-listbox__option',
+                      isItemSelected ? 'multiselector-listbox__option--selected' : '',
+                      shouldVisuallyFocusOnFirstItem || shouldVisuallyFocusOnLastItem || areYouFirstToMatchSearchedText
+                        ? 'multiselector-listbox__option--visually-focused'
+                        : ''
+                    )}
+                    onClick={() => {
+                      dispatch({ type: TYPES.UPDATE_ACCESSIBILITY_SELECTED_ITEM, payload: { selectedItem: item } });
 
-                    const copiedSelectedItems = [...selectedItems];
-                    const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
-                    const isItemAlreadySelected = itemIndex >= 0;
+                      const copiedSelectedItems = [...selectedItems];
+                      const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
+                      const isItemAlreadySelected = itemIndex >= 0;
 
-                    if (isItemAlreadySelected) copiedSelectedItems.splice(itemIndex, 1);
-                    else copiedSelectedItems.push(item);
+                      if (isItemAlreadySelected) copiedSelectedItems.splice(itemIndex, 1);
+                      else copiedSelectedItems.push(item);
 
-                    dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
+                      dispatch({ type: TYPES.UPDATE_SELECTED_ITEMS, payload: { selectedItems: copiedSelectedItems } });
 
-                    onSelectItem?.(item, copiedSelectedItems); // From consumer of the library
-                  }}
-                >
-                  {item.textContent}
-                  {withMeta && isItemSelected && <span className="with-meta">selected</span>}
-                </div>
-              );
-            })}
+                      onSelectItem?.(item, copiedSelectedItems); // From consumer of the library
+                    }}
+                  >
+                    {item.textContent}
+                    <If condition={!!withMeta} do={<span className="with-meta">selected</span>} />
+                  </div>
+                );
+              })}
 
-            {isLoading && (
-              <span role="alert" aria-live="polite" className="multiselector-listbox__loader">
-                <MultiSelectorLoader isLoading={isLoading} />
-              </span>
-            )}
-          </div>
-        )}
+              <If
+                condition={!!isLoading}
+                do={
+                  <span role="alert" aria-live="polite" className="multiselector-listbox__loader">
+                    <MultiSelectorLoader isLoading={isLoading!} />
+                  </span>
+                }
+              />
+            </div>
+          }
+        />
       </>
     );
   }
