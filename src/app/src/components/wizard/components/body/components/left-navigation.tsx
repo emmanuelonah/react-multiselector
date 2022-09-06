@@ -14,9 +14,10 @@ const Nav = styled.nav`
   & .accordion {
     & .accordion__heading {
       font-weight: 900;
-      border-right: solid 1px #d1cfcf;
 
       & button {
+        font-size: 1.1rem;
+        font-weight: 700;
         background-color: transparent;
         border: none;
         border: 0; // for IE
@@ -38,17 +39,15 @@ const Nav = styled.nav`
   }
 
   width: 100%;
-  padding-left: 0.5rem;
 
   & ul {
     color: #333;
-    border-left: 1px solid #d1cfcf;
-    padding-left: 1.5rem;
+    padding-left: 1rem;
     margin-top: 0.5rem;
+    font-size: 1rem;
 
     & li {
       padding-bottom: 0.5rem;
-      font-size: 0.8rem;
       cursor: pointer;
 
       &.active {

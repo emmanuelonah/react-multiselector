@@ -1,3 +1,3 @@
 export default function Overview() {
-  return <>Overview Page</>;
+  return <h3>Coming soon</h3>;
 }

@@ -3,15 +3,18 @@ import styled from 'styled-components';
 import { Multiselector } from 'packages';
 
 const Container = styled.div`
-  background-color: #e2bffc;
-  border-radius: 20px;
-  border: solid 1px #959595;
+  background-color: #002240;
+  border-radius: 10px;
   padding: 1rem;
+  max-height: 500px;
+  overflow: hidden;
+  overflow-y: scroll;
 
   & h1 {
     font-size: 1rem;
     padding-bottom: 1rem;
     font-weight: 500;
+    color: #fff;
   }
 
   & .multiselector-imp {
@@ -50,6 +53,7 @@ const Container = styled.div`
     & .multiselector-label {
       margin-right: 10px;
       width: 30%;
+      color: #fff;
     }
 
     & .multiselector-search-bar {

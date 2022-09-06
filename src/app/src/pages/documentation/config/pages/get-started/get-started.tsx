@@ -1,3 +1,3 @@
 export default function GetStarted() {
-  return <>GetStarted Page</>;
+  return <h3>Coming soon</h3>;
 }
