@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { If } from 'components';
 import { useComposeRefs } from 'hooks';
 import { composeClassNames } from 'utils';
 import { MultiSelectorLoader } from './multiselector.__loader__';
@@ -11,7 +12,6 @@ interface MultiSelectorInfiniteScrollerPropTypes extends PrimitiveDivTypes {
   hasMoreItemsToLoad: boolean;
   loaderNode?: React.ReactNode;
   children: React.ReactElement | React.ReactElement[];
-  // eslint-disable-next-line no-unused-vars
   onScroll: (event: React.UIEvent<HTMLDivElement>) => void;
 }
 
@@ -41,7 +41,8 @@ export const MultiSelectorInfiniteScroller = React.forwardRef<
       onScroll={onScrollHandler}
     >
       {children}
-      {loaderNode ?? <MultiSelectorLoader isLoading={isLoading} />}
+
+      <If condition={loaderNode == undefined} do={<MultiSelectorLoader isLoading={isLoading} />} />
     </div>
   );
 });

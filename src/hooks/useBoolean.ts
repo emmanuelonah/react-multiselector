@@ -6,5 +6,5 @@ export function useBoolean(initialValue?: boolean | (() => boolean)) {
   const setToTrue = React.useCallback(() => setValue(true), []);
   const toggle = React.useCallback(() => setValue((value) => !value), []);
 
-  return [value, toggle, setToFalse, setToTrue] as const;
+  return [value, { toggle, setToFalse, setToTrue }] as const;
 }

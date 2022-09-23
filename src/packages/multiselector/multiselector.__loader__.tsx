@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import { composeClassNames } from 'utils';
-import { AccessibleIcon, VisuallyHidden } from 'components';
+import { If, AccessibleIcon, VisuallyHidden } from 'components';
 
 // LOADING ICON BELOW
 /** ********************************************************* */
@@ -82,12 +82,15 @@ export const MultiSelectorLoader = React.forwardRef<MultiSelectorLoaderElement, 
         aria-label={accessibleLoadingTextContent}
         className={composeClassNames('multiselector-loader', className)}
       >
-        {shownLoader && (
-          <AccessibleIcon label={accessibleLoadingTextContent!}>
-            <>{loaderNode}</>
-          </AccessibleIcon>
-        )}
-        {isDoneLoading && <VisuallyHidden>{accessibleDoneLoadingTextContent}</VisuallyHidden>}
+        <If
+          condition={shownLoader}
+          do={
+            <AccessibleIcon label={accessibleLoadingTextContent!}>
+              <>{loaderNode}</>
+            </AccessibleIcon>
+          }
+        />
+        <If condition={isDoneLoading} do={<VisuallyHidden>{accessibleDoneLoadingTextContent}</VisuallyHidden>} />
       </div>
     );
   }

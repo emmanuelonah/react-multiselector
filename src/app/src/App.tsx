@@ -1,8 +1,7 @@
 import { ThemeProvider } from 'styled-components';
 
 import { theme, GlobalStyle } from 'styles';
-
-import { Experiment } from 'packages/multiselector/stories/experiment';
+import { Router } from 'app/src/routes';
 
 function App() {
   return (
@@ -11,7 +10,8 @@ function App() {
       <a href="#main" className="skip-content">
         Skip to main content
       </a>
-      <Experiment />
+
+      <Router />
     </ThemeProvider>
   );
 }

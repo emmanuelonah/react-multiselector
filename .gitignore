@@ -21,9 +21,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-__experiment🧪__.js
-/library
-/private
-/experiments
+experiments*
 

@@ -33,10 +33,14 @@ export const theme = {
     xxl: '3rem',
     xxxl: '6rem',
   },
+  pageWidth: {
+    minWidth: '100%',
+    maxWidth: '1022px',
+  },
   colors: {
     primary: ' #481EBD',
     secondary: 'rgba(0, 0, 0, 0.3);',
-    background: 'rgba(147, 110, 251, 0.15)',
+    background: '#fff',
     border: '#C4C4C4',
     black: '#000',
     white: '#fff',
