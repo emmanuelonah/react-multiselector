@@ -126,11 +126,11 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
                   index
                 );
 
-                /* eslint-disable jsx-a11y/interactive-supports-focus */
                 return (
                   <div
                     key={item.id}
                     role="option"
+                    tabIndex={-1}
                     aria-selected={isItemSelected}
                     className={composeClassNames(
                       'multiselector-listbox__option',
@@ -155,7 +155,7 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
                     }}
                   >
                     {item.textContent}
-                    <If condition={!!withMeta} do={<span className="with-meta">selected</span>} />
+                    <If condition={!!withMeta && isItemSelected} do={<span className="with-meta">selected</span>} />
                   </div>
                 );
               })}

@@ -48,8 +48,8 @@
     "webpack": "^5.73.0"
   },
   "scripts": {
-    "start:ui": "react-scripts start",
-    "build:ui": "react-scripts build",
+    "start:client": "react-scripts start",
+    "build:client": "react-scripts build",
     "start:sb": "start-storybook -p 6006 -s public",
     "build:sb": "build-storybook -s public",
     "test": "react-scripts test",
