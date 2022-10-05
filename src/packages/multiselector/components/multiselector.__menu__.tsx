@@ -4,7 +4,7 @@ import { If, Input } from 'components';
 import { useComposeRefs } from 'hooks';
 import { composeClassNames } from 'utils';
 import { MultiSelectorLoader } from './multiselector.__loader__';
-import { inputAccessibilityKeyHandler, SELECT_ACTIONS, CUSTOM_EVENT_KEYS } from './accessibility.utils';
+import { inputAccessibilityKeyHandler, SELECT_ACTIONS, CUSTOM_EVENT_KEYS } from '../utils/accessibility';
 import { type SelectedItem, useMultiSelectContext, TYPES } from './multiselector.__implementation__';
 
 /// UTILS BELOW
@@ -55,17 +55,15 @@ export const MultiSelectorMenu = React.forwardRef<MultiSelectorMenuElement, Mult
     forwardedRef
   ) => {
     const { action, selectedItems, accessibility, shownItems, dispatch } = useMultiSelectContext();
+    const [searchedText, setSearchedText] = React.useState('');
+    const ourRef = React.useRef<HTMLInputElement>(null);
+    const composeSearchBarRef = useComposeRefs<HTMLInputElement>(searchBarRef!, ourRef);
 
     // THIS IS USEFUL WHEN THE USER WANTS TO CONTROL THE RENDERING SYSTEM BY TAPPING THE DATA WHILE RENDERING IT TO
     if (typeof children === 'function') return children(items) as React.ReactElement;
 
     // THIS IS USEFUL WHEN THE USER IS CONSUMING INFINITE DATA USING OUR INFINITE SCROLLER FUNCTIONALITY
     if (React.isValidElement(children)) return React.cloneElement(children, { items });
-
-    /* eslint-disable react-hooks/rules-of-hooks */
-    const [searchedText, setSearchedText] = React.useState('');
-    const ourRef = React.useRef<HTMLInputElement>(null);
-    const composeSearchBarRef = useComposeRefs<HTMLInputElement>(searchBarRef!, ourRef);
 
     const shouldRenderListItems = !!items.length && shownItems;
     const onInputKeydownHandler = inputAccessibilityKeyHandler(dispatch);

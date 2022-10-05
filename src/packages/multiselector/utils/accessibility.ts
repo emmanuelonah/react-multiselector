@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { __DEV__ } from 'utils';
-import { TYPES, type ActionType } from './multiselector.__implementation__';
+import { TYPES, type ActionType } from '../components/multiselector.__implementation__';
 
 const CUSTOM_EVENT_KEYS = Object.freeze({
   INPUT_PRINTABLE_KEY: 'PrintableChar',
@@ -39,7 +39,7 @@ const SELECT_ACTIONS = Object.freeze({
  * @param  {React.Dispatch<ActionType>} dispatch
  * @description is a function that handles the accessibility key events
  * for the input element
- *************************************************************************** */
+ **** */
 function inputAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
   return function onInputKeydownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
     switch (event.key) {
@@ -98,7 +98,7 @@ function inputAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
  * @param  {React.Dispatch<ActionType>} dispatch
  * @description is a function that handles the accessibility key events
  * for the listbox element
- *************************************************************************** */
+ **** */
 function listBoxAccessibilityKeyHandler(dispatch: React.Dispatch<ActionType>) {
   return function onInputKeydownHandler(event: React.KeyboardEvent<HTMLInputElement>) {
     switch (event.key) {

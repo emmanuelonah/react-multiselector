@@ -40,7 +40,9 @@ export const MultiSelectorTag = React.forwardRef<MultiSelectorTagElement, MultiS
                       onClick={() => {
                         const copiedSelectedItems = [...selectedItems];
                         const itemIndex = copiedSelectedItems.findIndex((copiedItem) => copiedItem.id === item.id);
+
                         copiedSelectedItems.splice(itemIndex, 1);
+
                         dispatch({
                           type: TYPES.UPDATE_SELECTED_ITEMS,
                           payload: { selectedItems: copiedSelectedItems },

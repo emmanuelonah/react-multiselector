@@ -2,12 +2,11 @@ import * as React from 'react';
 
 import { ValueOf } from 'types/global';
 
-import { SELECT_ACTIONS } from './accessibility.utils';
+import { SELECT_ACTIONS } from '../utils/accessibility';
 import { composeClassNames, createContext } from 'utils';
 
-// UTILS BELOW
+/// UTILS BELOW
 /** ************************************************** */
-/* eslint-disable no-unused-vars */
 enum TYPES {
   UPDATE_ACTION = '@react-multiselector/UPDATE_ACTION',
   UPDATE_SHOWN_ITEMS = '@react-multiselector/UPDATE_SHOWN_ITEMS',
@@ -23,7 +22,6 @@ type FocusedItem = { itemIndex: number; item: SelectedItem };
 type BaseState = {
   shownItems: boolean;
   selectedItems: SelectedItem[];
-  // eslint-disable-next-line no-undef
   action: ValueOf<typeof SELECT_ACTIONS>;
   accessibility: {
     selectedItem: SelectedItem;
@@ -33,11 +31,9 @@ type BaseState = {
   };
 };
 
-// REDUCER BELOW
+/// REDUCER BELOW
 /** ************************************************** */
-
 interface StateType extends BaseState {}
-
 type ActionType = {
   type: ValueOf<typeof TYPES>;
   payload: Partial<Omit<BaseState, 'accessibility'>> & { selectedItem?: SelectedItem } & {
@@ -60,9 +56,8 @@ function multiSelectorReducer(state: StateType, action: ActionType): StateType {
   }
 }
 
-// COMPONENT BELOW
+/// COMPONENT BELOW
 /** ************************************************** */
-
 interface MultiSelectorContextTypes extends BaseState {
   dispatch: React.Dispatch<ActionType>;
   selectedItems: SelectedItem[];
@@ -77,7 +72,7 @@ interface MultiSelectorPropTypes extends Omit<PrimitiveDivTypes, 'id'> {
   selectedItems: SelectedItem[];
 }
 
-/** ****************************************
+/** **************************************************************************************
  * @MultiSelectorImp
  * @howToUseThisFeature
  *
@@ -86,8 +81,7 @@ interface MultiSelectorPropTypes extends Omit<PrimitiveDivTypes, 'id'> {
  *      <Multiselector.Label>Fruits</Multiselector.Label>
  *      <Multiselector.Body searchBarPlaceholder="Search fruit" items={items} isLoading />
  *   </Multiselector.Root>
- */
-
+ **** */
 const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPropTypes>(function MultiSelectorImp(
   { shownItems, className, selectedItems, ...restProps },
   forwardedRef
@@ -119,7 +113,6 @@ const MultiSelectorImp = React.forwardRef<MultiSelectorElement, MultiSelectorPro
         aria-controls={values.accessibility.menuId}
         id={values.accessibility.comboBoxId}
         className={composeClassNames('multiselector-imp', className)}
-        /* aria-activedescendant={values.accessibility.selectedItem} */
       />
     </Provider>
   );

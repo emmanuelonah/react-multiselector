@@ -1,8 +1,8 @@
-import { MultiSelectorTag } from './multiselector.__tag__';
-import { MultiSelectorMenu } from './multiselector.__menu__';
-import { MultiSelectorLabel } from './multiselector.__label__';
-import MultiSelectorImp from './multiselector.__implementation__';
-import { MultiSelectorInfiniteScroller } from './multiselector.__infinitscroller__';
+import { MultiSelectorTag } from './components/multiselector.__tag__';
+import { MultiSelectorMenu } from './components/multiselector.__menu__';
+import { MultiSelectorLabel } from './components/multiselector.__label__';
+import MultiSelectorImp from './components/multiselector.__implementation__';
+import { MultiSelectorInfiniteScroller } from './components/multiselector.__infinitscroller__';
 
 export default {
   Root: MultiSelectorImp,
